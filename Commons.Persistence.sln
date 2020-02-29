@@ -5,16 +5,17 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence", "Commons.Persistence\Commons.Persistence.csproj", "{7852EC02-74DF-4076-9EB3-348BB8E2599C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons.Persistence.Tests", "Commons.Persistence.Tests\Commons.Persistence.Tests.csproj", "{DF0BB708-CCA3-4049-9262-9B1608F4EF08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.Tests", "Commons.Persistence.Tests\Commons.Persistence.Tests.csproj", "{DF0BB708-CCA3-4049-9262-9B1608F4EF08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{37724AA1-0550-4AB7-8DD3-A65CA8453E5C}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines.yml = azure-pipelines.yml
+		Build\nuget.config = Build\nuget.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons.Persistence.EntityFramework", "Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj", "{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.EntityFramework", "Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj", "{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons.Persistence.EntityFramework.Tests", "Commons.Persistence.EntityFramework.Tests\Commons.Persistence.EntityFramework.Tests.csproj", "{2C650129-A639-49F6-87CE-D6165D24CFD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.EntityFramework.Tests", "Commons.Persistence.EntityFramework.Tests\Commons.Persistence.EntityFramework.Tests.csproj", "{2C650129-A639-49F6-87CE-D6165D24CFD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

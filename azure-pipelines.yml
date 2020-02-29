@@ -24,6 +24,7 @@ jobs:
       command: 'restore'
       restoreSolution: '**/*.sln'
       feedsToUse: 'config'
+      nugetConfigPath: 'Build/nuget.config'
       externalFeedCredentials: 'Nexus-NuGet Restore'
 
   - task: DotNetCoreCLI@2
