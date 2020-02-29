@@ -63,7 +63,7 @@ jobs:
     displayName: 'NuGet Pakete packen'
     inputs:
       command: 'pack'
-      packagesToPack: '**/Commons.*!(.Tests).csproj'
+      packagesToPack: '**/*.csproj'
       nobuild: true
       versioningScheme: 'off'
       buildProperties: 'VersionSuffix=$(pckVersion)'
