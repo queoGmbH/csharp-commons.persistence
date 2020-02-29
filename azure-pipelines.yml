@@ -1,0 +1,71 @@
+# ASP.NET Core
+# Build and test ASP.NET Core projects targeting .NET Core.
+# Add steps that run tests, create a NuGet package, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- develop
+
+jobs:
+- job: buildAndTest
+
+  variables:
+    buildConfiguration: 'Debug'
+    pckVersion: 'beta-$(Build.BuildNumber)'
+    betaVersion: 'beta-00003'
+  
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'restore project dependencies'
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
+    
+  - task: DotNetCoreCLI@2
+    displayName: 'Build projects - $(buildConfiguration)'
+    inputs:
+      command: 'build'
+      arguments: '--configuration $(buildConfiguration)'
+      projects: '**/*.csproj'
+
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Install ReportGenerator'
+    inputs:
+      command: custom
+      custom: tool
+      arguments: 'install --global dotnet-reportgenerator-globaltool'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run unit tests - $(buildConfiguration)'
+    inputs:
+      command: test
+      projects: '**/*Tests/*.csproj'
+      publishTestResults: true
+      arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+
+  - script: echo "##vso[task.prependpath]$HOME/.dotnet/tools"
+    displayName: 'workaround issue 9472'
+
+  - script: |
+      reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/CodeCoverage -reporttypes:HtmlInline_AzurePipelines
+    displayName: 'Create code coverage report'
+
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage report'
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.cobertura.xml'
+
+  - script: echo $(pckVersion)
+
+  - task: DotNetCoreCLI@2
+    displayName: 'NuGet Pakete packen'
+    inputs:
+      command: 'pack'
+      packagesToPack: '**/Commons.Checks.csproj;**/Commons.csproj'
+      nobuild: true
+      versioningScheme: 'off'
+      buildProperties: 'VersionSuffix=$(pckVersion)'
+      outputDir: '$(Build.ArtifactStagingDirectory)/packages'
+      verbosityPack: 'normal'
