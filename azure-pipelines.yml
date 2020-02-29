@@ -15,7 +15,7 @@ jobs:
     betaVersion: 'beta-00003'
   
   steps:
-    - task: NuGetToolInstaller@1
+  - task: NuGetToolInstaller@1
     inputs:
       versionSpec: '4.x'
 
