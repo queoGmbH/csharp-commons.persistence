@@ -15,6 +15,9 @@ jobs:
     betaVersion: 'beta-00003'
   
   steps:
+  - task: NuGetAuthenticate@0
+    inputs:
+      nuGetServiceConnections: 'Nexus-NuGet Restore'
   - task: DotNetCoreCLI@2
     displayName: 'restore project dependencies'
     inputs:
