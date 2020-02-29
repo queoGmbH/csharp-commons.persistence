@@ -5,4 +5,8 @@
     <VersionPrefix>2.0.0</VersionPrefix>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Queo.Commons.Checks" Version="2.0.0" />
+  </ItemGroup>
+
 </Project>
