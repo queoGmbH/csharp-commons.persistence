@@ -15,6 +15,10 @@ jobs:
     betaVersion: 'beta-00003'
   
   steps:
+    - task: NuGetToolInstaller@1
+    inputs:
+      versionSpec: '4.x'
+
   - task: NuGetAuthenticate@0
     inputs:
       nuGetServiceConnections: 'Nexus-NuGet Restore'
