@@ -18,17 +18,19 @@ jobs:
   - task: NuGetAuthenticate@0
     inputs:
       nuGetServiceConnections: 'Nexus-NuGet Restore'
-  - task: DotNetCoreCLI@2
-    displayName: 'restore project dependencies'
+
+  - task: NuGetCommand@2
     inputs:
-      command: restore
-      projects: '**/*.csproj'
-    
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+      feedsToUse: 'config'
+      externalFeedCredentials: 'Nexus-NuGet Restore'
+
   - task: DotNetCoreCLI@2
     displayName: 'Build projects - $(buildConfiguration)'
     inputs:
       command: 'build'
-      arguments: '--configuration $(buildConfiguration)'
+      arguments: '--no-restore --configuration $(buildConfiguration)'
       projects: '**/*.csproj'
 
   
