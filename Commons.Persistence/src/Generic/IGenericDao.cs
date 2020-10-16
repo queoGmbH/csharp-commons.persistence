@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Commons.Persistence.Generic {
+namespace Queo.Commons.Persistence.Generic {
     public interface IGenericDao<T, in TKey> {
         /// <summary>
         ///     Leert die Session.

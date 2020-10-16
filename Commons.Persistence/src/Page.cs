@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using Queo.Commons.Checks;
 
-namespace Commons.Persistence {
+namespace Queo.Commons.Persistence {
     /// <summary>
     ///     Basisimplementierung für eine Seite beim Paging.
     /// </summary>

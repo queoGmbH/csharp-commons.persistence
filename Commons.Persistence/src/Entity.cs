@@ -1,8 +1,8 @@
 ﻿using System;
 
-using Commons.Persistence.Generic;
+using Queo.Commons.Persistence.Generic;
 
-namespace Commons.Persistence {
+namespace Queo.Commons.Persistence {
     /// <summary>
     ///     Eine beispielhafte Implementierung für ein Entity mit einem Integer als ID.
     ///     Diese kann auch als Grundlage für konkrete Implementierungen von Domainobjekten

@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>Queo.Commons.Persistence.Tests</AssemblyName>
+
+    <RootNamespace>Queo.Commons.Persistence.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

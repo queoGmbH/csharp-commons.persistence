@@ -4,14 +4,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-using Commons.Persistence.Generic;
-
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Commons.Persistence.EntityFramework.Generic {
+using Queo.Commons.Persistence.Generic;
+
+namespace Queo.Commons.Persistence.EntityFramework.Generic {
     public class GenericDao<TEntity, TKey> : IGenericDao<TEntity, TKey> where TEntity : class {
         private readonly DbContext _dbContext;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Commons.Persistence.Generic {
+namespace Queo.Commons.Persistence.Generic {
     public class Entity<TKey> {
         private Guid _businessId;
         private TKey _id;

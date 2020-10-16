@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Commons.Persistence.EntityFramework.Tests.TestClasses {
+namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses {
     public class TestDbContext : DbContext {
         public TestDbContext(DbContextOptions options) : base(options) {
         }

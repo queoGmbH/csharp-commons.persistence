@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Commons.Persistence {
+namespace Queo.Commons.Persistence {
     /// <summary>
     ///     Basisimplementierung von <see cref="IPageable" />.
     /// </summary>

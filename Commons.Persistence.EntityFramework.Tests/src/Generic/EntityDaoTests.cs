@@ -1,13 +1,13 @@
-﻿using Commons.Persistence.EntityFramework.Generic;
-using Commons.Persistence.EntityFramework.Tests.TestClasses;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
 
 using NUnit.Framework;
 
-namespace Commons.Persistence.EntityFramework.Tests.Generic {
+using Queo.Commons.Persistence.EntityFramework.Generic;
+using Queo.Commons.Persistence.EntityFramework.Tests.TestClasses;
+
+namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic {
     [TestFixture]
     public class EntityDaoTests : PersistenceBaseTest {
         [Test]

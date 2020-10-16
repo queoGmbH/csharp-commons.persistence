@@ -1,6 +1,6 @@
-﻿using Commons.Persistence.Generic;
+﻿using Queo.Commons.Persistence.Generic;
 
-namespace Commons.Persistence.EntityFramework.Tests.TestClasses {
+namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses {
     public class EntityWithStringKey : Entity<string> {
         public EntityWithStringKey(string id):base(id) {
             

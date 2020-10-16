@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Commons.Persistence {
+namespace Queo.Commons.Persistence {
     /// <summary>
     ///     Eine Seite ist eine Teilliste von Objekten.
     ///     Die Seite enthält Informationen über die Position der Teilliste innerhalb der gesamten Liste.

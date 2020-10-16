@@ -2,7 +2,7 @@ using System;
 
 using NUnit.Framework;
 
-namespace Commons.Persistence.Tests.src {
+namespace Queo.Commons.Persistence.Tests {
     public class EntityTests {
 
         [Test]

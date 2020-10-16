@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Commons.Persistence.Generic;
-
 using Microsoft.EntityFrameworkCore;
 
-namespace Commons.Persistence.EntityFramework.Generic {
+using Queo.Commons.Persistence.Generic;
+
+namespace Queo.Commons.Persistence.EntityFramework.Generic {
     public class EntityDao<TEntity, TKey> : GenericDao<TEntity, TKey>, IEntityDao<TEntity, TKey> where TEntity : Entity<TKey> {
         public EntityDao(DbContext dbContext) : base(dbContext) {
         }

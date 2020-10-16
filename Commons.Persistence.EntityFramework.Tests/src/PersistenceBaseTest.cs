@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Commons.Persistence.EntityFramework.Tests {
+namespace Queo.Commons.Persistence.EntityFramework.Tests {
     public abstract class PersistenceBaseTest {
         /// <summary>
         ///     Stellt in Abhängigkeit der aufrufenden Methode einen Namen für die In-Memory-DB zur Verfügung

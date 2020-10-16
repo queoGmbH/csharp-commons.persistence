@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace Commons.Persistence.EntityFramework {
+namespace Queo.Commons.Persistence.EntityFramework {
     /// <summary>
     /// Startet eine Transaktion und speichert am Ende die Daten in der DB, wenn keine Exception aufgetreten ist bzw.
     /// das Rollback-Flag nicht gesetzt ist.

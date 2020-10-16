@@ -1,6 +1,6 @@
-﻿using Commons.Persistence.Generic;
+﻿using Queo.Commons.Persistence.Generic;
 
-namespace Commons.Persistence {
+namespace Queo.Commons.Persistence {
     public interface IEntityDao<T> : IEntityDao<T, int> where T : Entity<int> {
 
     }

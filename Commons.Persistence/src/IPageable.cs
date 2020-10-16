@@ -1,4 +1,4 @@
-﻿namespace Commons.Persistence {
+﻿namespace Queo.Commons.Persistence {
     /// <summary>
     ///     Interface for pagination information.
     /// </summary>
