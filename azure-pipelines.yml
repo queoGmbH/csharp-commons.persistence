@@ -41,17 +41,15 @@ stages:
     - task: NuGetAuthenticate@0
       inputs:
         nuGetServiceConnections: 'Nexus-NuGet Restore'
-  
-    - script: dotnet restore
 
-#    - task: NuGetCommand@2
-#      inputs:
-#        command: 'restore'
-#        restoreSolution: '**/*.sln'
-#        feedsToUse: 'config'
-#        nugetConfigPath: 'Build/nuget.config'
-#        includeNuGetOrg: true
-#        externalFeedCredentials: 'Nexus-NuGet Restore'
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+        feedsToUse: 'config'
+        nugetConfigPath: 'Build/nuget.config'
+        includeNuGetOrg: true
+        externalFeedCredentials: 'Nexus-NuGet Restore'
   
     - task: DotNetCoreCLI@2
       displayName: 'Build projects - $(buildConfiguration)'
