@@ -1,57 +1,30 @@
-using System.Threading.Tasks;
-using Cake.Core;
-using Cake.Core.Diagnostics;
+using Build.Common.Extensions;
+
 using Cake.Frosting;
 
-public static class Program
-{
-    public static int Main(string[] args)
-    {
-        return new CakeHost()
-            .UseContext<BuildContext>()
-            .Run(args);
-    }
-}
+using Microsoft.Extensions.DependencyInjection;
 
-public class BuildContext : FrostingContext
+namespace Build
 {
-    public bool Delay { get; set; }
-
-    public BuildContext(ICakeContext context)
-        : base(context)
+    public class Program : IFrostingStartup
     {
-        Delay = context.Arguments.HasArgument("delay");
-    }
-}
-
-[TaskName("Hello")]
-public sealed class HelloTask : FrostingTask<BuildContext>
-{
-    public override void Run(BuildContext context)
-    {
-        context.Log.Information("Hello");
-    }
-}
-
-[TaskName("World")]
-[IsDependentOn(typeof(HelloTask))]
-public sealed class WorldTask : AsyncFrostingTask<BuildContext>
-{
-    // Tasks can be asynchronous
-    public override async Task RunAsync(BuildContext context)
-    {
-        if (context.Delay)
+        /// <summary>Configures services used by Cake.</summary>
+        /// <param name="services">The services to configure.</param>
+        public void Configure(IServiceCollection services)
         {
-            context.Log.Information("Waiting...");
-            await Task.Delay(1500);
+            // Register the tools
+            services.UseTool("nuget:?package=NuGet.CommandLine".AsUri());
+            services.UseTool("nuget:?package=GitVersion.CommandLine".AsUri());
+            services.UseTool("nuget:?package=NUnit.ConsoleRunner".AsUri());
         }
 
-        context.Log.Information("World");
+        public static int Main(string[] args) =>
+            // Create the host.
+            new CakeHost()
+                .UseStartup<Program>()
+                .UseContext<Context>()
+                .UseLifetime<Lifetime>()
+                .UseWorkingDirectory("../..")
+                .Run(args);
     }
-}
-
-[TaskName("Default")]
-[IsDependentOn(typeof(WorldTask))]
-public class DefaultTask : FrostingTask
-{
 }
