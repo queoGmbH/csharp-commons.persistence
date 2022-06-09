@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29609.76
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence", "Commons.Persistence\Commons.Persistence.csproj", "{7852EC02-74DF-4076-9EB3-348BB8E2599C}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.Tests", "Commons.Persistence.Tests\Commons.Persistence.Tests.csproj", "{DF0BB708-CCA3-4049-9262-9B1608F4EF08}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DevOps", "DevOps", "{37724AA1-0550-4AB7-8DD3-A65CA8453E5C}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines.yml = azure-pipelines.yml
 		Build\nuget.config = Build\nuget.config
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.EntityFramework", "Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj", "{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence", "src\Commons.Persistence\Commons.Persistence.csproj", "{ECA598C9-4699-4CB1-955E-B6FF6D9ACA8E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.EntityFramework.Tests", "Commons.Persistence.EntityFramework.Tests\Commons.Persistence.EntityFramework.Tests.csproj", "{2C650129-A639-49F6-87CE-D6165D24CFD3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.EntityFramework", "src\Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj", "{D8F5095E-BE60-43A3-BCC1-38A9D324E4DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.EntityFramework.Tests", "tests\Commons.Persistence.EntityFramework.Tests\Commons.Persistence.EntityFramework.Tests.csproj", "{6933F592-DB5A-491B-9AB2-E53D61C72E8B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons.Persistence.Tests", "tests\Commons.Persistence.Tests\Commons.Persistence.Tests.csproj", "{A4192F24-2F1D-41D5-8CFC-CE1E3E9B1F98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,22 +23,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7852EC02-74DF-4076-9EB3-348BB8E2599C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7852EC02-74DF-4076-9EB3-348BB8E2599C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7852EC02-74DF-4076-9EB3-348BB8E2599C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7852EC02-74DF-4076-9EB3-348BB8E2599C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DF0BB708-CCA3-4049-9262-9B1608F4EF08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DF0BB708-CCA3-4049-9262-9B1608F4EF08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DF0BB708-CCA3-4049-9262-9B1608F4EF08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DF0BB708-CCA3-4049-9262-9B1608F4EF08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD43AF7C-4216-4E9C-99CC-7C20CE87174C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2C650129-A639-49F6-87CE-D6165D24CFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C650129-A639-49F6-87CE-D6165D24CFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C650129-A639-49F6-87CE-D6165D24CFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C650129-A639-49F6-87CE-D6165D24CFD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECA598C9-4699-4CB1-955E-B6FF6D9ACA8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECA598C9-4699-4CB1-955E-B6FF6D9ACA8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECA598C9-4699-4CB1-955E-B6FF6D9ACA8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECA598C9-4699-4CB1-955E-B6FF6D9ACA8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F5095E-BE60-43A3-BCC1-38A9D324E4DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F5095E-BE60-43A3-BCC1-38A9D324E4DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F5095E-BE60-43A3-BCC1-38A9D324E4DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F5095E-BE60-43A3-BCC1-38A9D324E4DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6933F592-DB5A-491B-9AB2-E53D61C72E8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6933F592-DB5A-491B-9AB2-E53D61C72E8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6933F592-DB5A-491B-9AB2-E53D61C72E8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6933F592-DB5A-491B-9AB2-E53D61C72E8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4192F24-2F1D-41D5-8CFC-CE1E3E9B1F98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4192F24-2F1D-41D5-8CFC-CE1E3E9B1F98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4192F24-2F1D-41D5-8CFC-CE1E3E9B1F98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4192F24-2F1D-41D5-8CFC-CE1E3E9B1F98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
