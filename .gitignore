@@ -341,3 +341,4 @@ healthchecksdb
 /.dotnet
 /tools
 /.artifacts.tests
+/tests/Commons.Persistence.Tests/coverage.cobertura.xml
