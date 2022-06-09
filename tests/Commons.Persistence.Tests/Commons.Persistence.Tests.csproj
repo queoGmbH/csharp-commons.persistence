@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Commons.Persistence\Commons.Persistence.csproj" />
+    <ProjectReference Include="..\..\src\Commons.Persistence\Commons.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

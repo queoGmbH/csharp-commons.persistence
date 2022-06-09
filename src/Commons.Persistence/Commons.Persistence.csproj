@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Queo.Commons.Checks" Version="2.0.0" />
+    <PackageReference Include="Queo.Commons.Checks" Version="3.0.0-beta-20220114.8" />
   </ItemGroup>
 
 </Project>
