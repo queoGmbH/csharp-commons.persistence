@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace Queo.Commons.Persistence {
+namespace Queo.Commons.Persistence
+{
     /// <summary>
     ///     Eine Seite ist eine Teilliste von Objekten.
     ///     Die Seite enthält Informationen über die Position der Teilliste innerhalb der gesamten Liste.
     /// </summary>
     /// <typeparam name="T">type of contained objects</typeparam>
-    public interface IPage<out T> : IEnumerable<T> {
+    public interface IPage<out T> : IEnumerable<T>
+    {
         /// <summary>
         ///     Gibt an ob es eine weitere Seite gibt.
         /// </summary>

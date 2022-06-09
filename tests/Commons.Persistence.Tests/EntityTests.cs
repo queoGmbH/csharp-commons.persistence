@@ -2,11 +2,14 @@ using System;
 
 using NUnit.Framework;
 
-namespace Queo.Commons.Persistence.Tests {
-    public class EntityTests {
+namespace Queo.Commons.Persistence.Tests
+{
+    public class EntityTests
+    {
 
         [Test]
-        public void TestToString() {
+        public void TestToString()
+        {
             int id = 3;
             Guid businessId = Guid.Parse("{B9CCE1CE-AD89-4999-B85B-42F05776A85E}");
             Entity entity = new Entity(id, businessId);
@@ -17,7 +20,8 @@ namespace Queo.Commons.Persistence.Tests {
         }
 
         [Test]
-        public void TestEqualsForReference() {
+        public void TestEqualsForReference()
+        {
             Entity firstReference = new Entity();
             Entity secondReference = firstReference;
 
@@ -25,7 +29,8 @@ namespace Queo.Commons.Persistence.Tests {
         }
 
         [Test]
-        public void TestEqualsSameBusinessIdDifferentInstances() {
+        public void TestEqualsSameBusinessIdDifferentInstances()
+        {
             int id = 3;
             Guid businessId = Guid.NewGuid();
             Entity firstObject = new Entity(id, businessId);
@@ -34,7 +39,8 @@ namespace Queo.Commons.Persistence.Tests {
         }
 
         [Test]
-        public void TestDifferentBusinessIdNotEqual() {
+        public void TestDifferentBusinessIdNotEqual()
+        {
             Guid firstBusinessId = Guid.Parse("{D98C1D4D-BEA8-44DC-A827-A46550249D92}");
             Guid secondBusinessId = Guid.Parse("{A3D0810D-3803-4302-B2B4-06F67686AD38}");
             Entity firstObject = new Entity(firstBusinessId);
@@ -44,7 +50,8 @@ namespace Queo.Commons.Persistence.Tests {
         }
 
         [Test]
-        public void TestDifferentTypeForSameBusinessIdAreNotEqual() {
+        public void TestDifferentTypeForSameBusinessIdAreNotEqual()
+        {
             Guid businessId = Guid.Parse("{D98C1D4D-BEA8-44DC-A827-A46550249D92}");
             Entity entity = new Entity(businessId);
             Foo foo = new Foo(businessId);
@@ -54,8 +61,10 @@ namespace Queo.Commons.Persistence.Tests {
         }
     }
 
-    internal class Foo : Entity {
-        public Foo(Guid businessId) : base(businessId) {
+    internal class Foo : Entity
+    {
+        public Foo(Guid businessId) : base(businessId)
+        {
         }
     }
 }

@@ -1,18 +1,22 @@
 ﻿using System;
 
-namespace Queo.Commons.Persistence.Generic {
-    public class Entity<TKey> {
+namespace Queo.Commons.Persistence.Generic
+{
+    public class Entity<TKey>
+    {
         private Guid _businessId;
         private TKey _id;
 
         /// <summary>
         ///     Initialisiert eine neue Instanz der <see cref="Entity{TKey}" />-Klasse.
         /// </summary>
-        public Entity() {
+        public Entity()
+        {
             _businessId = Guid.NewGuid();
         }
 
-        public Entity(TKey id) : this() {
+        public Entity(TKey id) : this()
+        {
             _id = id;
         }
 
@@ -20,7 +24,8 @@ namespace Queo.Commons.Persistence.Generic {
         ///     Initialisiert eine neue Instanz der <see cref="Entity{TKey}" />-Klasse.
         ///     Hauptsächlich für Tests gedacht.
         /// </summary>
-        public Entity(Guid businessId) {
+        public Entity(Guid businessId)
+        {
             _businessId = businessId;
         }
 
@@ -30,7 +35,8 @@ namespace Queo.Commons.Persistence.Generic {
         /// </summary>
         /// <param name="id">Die ID</param>
         /// <param name="businessId">Die Business ID</param>
-        public Entity(TKey id, Guid businessId) {
+        public Entity(TKey id, Guid businessId)
+        {
             _id = id;
             _businessId = businessId;
         }
@@ -38,7 +44,8 @@ namespace Queo.Commons.Persistence.Generic {
         /// <summary>
         ///     Liefert die BusinessId des Objekts.
         /// </summary>
-        public virtual Guid BusinessId {
+        public virtual Guid BusinessId
+        {
             get { return _businessId; }
             protected set { _businessId = value; }
         }
@@ -46,7 +53,8 @@ namespace Queo.Commons.Persistence.Generic {
         /// <summary>
         ///     Liefert die ID des Objekts.
         /// </summary>
-        public virtual TKey Id {
+        public virtual TKey Id
+        {
             get { return _id; }
             protected set { _id = value; }
         }
@@ -59,25 +67,31 @@ namespace Queo.Commons.Persistence.Generic {
         ///     true, wenn das angegebene Objekt und das aktuelle Objekt gleich sind, andernfalls false.
         /// </returns>
         /// <param name="obj">Das Objekt, das mit dem aktuellen Objekt verglichen werden soll.</param>
-        public override bool Equals(object obj) {
-            if (ReferenceEquals(this, obj)) {
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+            {
                 return true;
             }
 
-            if (obj == null) {
+            if (obj == null)
+            {
                 return false;
             }
 
-            if (!(obj is Entity<TKey>)) {
+            if (!(obj is Entity<TKey>))
+            {
                 return false;
             }
 
-            if (GetTypeUnproxied() != ((Entity<TKey>) obj).GetTypeUnproxied()) {
+            if (GetTypeUnproxied() != ((Entity<TKey>)obj).GetTypeUnproxied())
+            {
                 return false;
             }
 
-            Entity<TKey> other = (Entity<TKey>) obj;
-            if (!BusinessId.Equals(other.BusinessId)) {
+            Entity<TKey> other = (Entity<TKey>)obj;
+            if (!BusinessId.Equals(other.BusinessId))
+            {
                 return false;
             }
 
@@ -90,11 +104,13 @@ namespace Queo.Commons.Persistence.Generic {
         /// <returns>
         ///     Ein Hashcode für das aktuelle Objekt.
         /// </returns>
-        public override int GetHashCode() {
+        public override int GetHashCode()
+        {
             return GetType().GetHashCode() ^ BusinessId.GetHashCode();
         }
 
-        public virtual Type GetTypeUnproxied() {
+        public virtual Type GetTypeUnproxied()
+        {
             return GetType();
         }
 
@@ -104,7 +120,8 @@ namespace Queo.Commons.Persistence.Generic {
         /// <returns>
         ///     Eine Zeichenfolge, die das aktuelle Objekt darstellt.
         /// </returns>
-        public override string ToString() {
+        public override string ToString()
+        {
             string toString = $"Type: {GetType().Name}, Id: {Id}, Bid: {BusinessId}";
             return toString;
         }

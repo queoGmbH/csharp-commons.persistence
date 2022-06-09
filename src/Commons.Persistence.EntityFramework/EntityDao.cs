@@ -6,10 +6,13 @@ using Microsoft.EntityFrameworkCore;
 
 using Queo.Commons.Persistence.EntityFramework.Generic;
 
-namespace Queo.Commons.Persistence.EntityFramework {
-    public class EntityDao<TEntity> : GenericDao<TEntity, int>, IEntityDao<TEntity> where TEntity : Entity{
+namespace Queo.Commons.Persistence.EntityFramework
+{
+    public class EntityDao<TEntity> : GenericDao<TEntity, int>, IEntityDao<TEntity> where TEntity : Entity
+    {
         /// <summary>Initializes a new instance of the <see cref="T:System.Object"></see> class.</summary>
-        public EntityDao(DbContext dbContext) : base(dbContext) {
+        public EntityDao(DbContext dbContext) : base(dbContext)
+        {
         }
 
         /// <summary>
@@ -20,7 +23,8 @@ namespace Queo.Commons.Persistence.EntityFramework {
         ///     enthalten sein muss, damit sie gefunden wird.
         /// </param>
         /// <returns></returns>
-        public virtual IList<TEntity> FindByBusinessIds(IList<Guid> businessIds) {
+        public virtual IList<TEntity> FindByBusinessIds(IList<Guid> businessIds)
+        {
             return DbContext.Set<TEntity>().Where(x => businessIds.Contains(x.BusinessId)).ToList();
         }
 
@@ -29,7 +33,8 @@ namespace Queo.Commons.Persistence.EntityFramework {
         /// </summary>
         /// <param name="businessId">die BusinessId</param>
         /// <returns>Das Entity</returns>
-        public virtual TEntity GetByBusinessId(Guid businessId) {
+        public virtual TEntity GetByBusinessId(Guid businessId)
+        {
             return DbContext.Set<TEntity>().Single(x => x.BusinessId == businessId);
         }
     }
