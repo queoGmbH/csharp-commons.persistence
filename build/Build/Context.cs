@@ -17,7 +17,8 @@ namespace Build
         }
 
         public IList<Lib> Lib { get; } = new List<Lib>() {
-            new Lib() { BuildConfig = "Release", MainProject = @"src\Commons.Persistence\Commons.Persistence.csproj" }
+            new Lib() { BuildConfig = "Release", MainProject = @"src\Commons.Persistence\Commons.Persistence.csproj" },
+            new Lib() {BuildConfig = "Release", MainProject = @"src\Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj"}
         };
 
         public General General { get; } = new();
@@ -60,7 +61,8 @@ namespace Build
     public class Tests
     {
         public Dictionary<string, string> TestProjects { get; } = new Dictionary<string, string>() {
-            { "Commons.Tests", @"tests\Commons.Persistence.Tests\Commons.Persistence.Tests.csproj" }
+            { "Commons.Persistence.Tests", @"tests\Commons.Persistence.Tests\Commons.Persistence.Tests.csproj" },
+            { "Commons.Persistence.EntityFramework.Tests", @"tests\Commons.Persistence.EntityFramework.Tests\Commons.Persistence.EntityFramework.Tests.csproj" }
         };
         public string BuildConfig { get; } = "Release";
     }

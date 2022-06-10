@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses
 {

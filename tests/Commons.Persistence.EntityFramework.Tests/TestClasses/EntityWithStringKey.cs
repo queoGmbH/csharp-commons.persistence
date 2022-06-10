@@ -1,4 +1,4 @@
-﻿using Queo.Commons.Persistence.Generic;
+using Queo.Commons.Persistence.Generic;
 
 namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses
 {
