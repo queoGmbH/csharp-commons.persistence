@@ -342,3 +342,4 @@ healthchecksdb
 /tools
 /.artifacts.tests
 /tests/Commons.Persistence.Tests/coverage.cobertura.xml
+/tests/Commons.Persistence.EntityFramework.Tests/coverage.cobertura.xml
