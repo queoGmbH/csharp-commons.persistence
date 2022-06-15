@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace Queo.Commons.Persistence.Generic {
-    public interface IGenericDao<T, in TKey> {
+namespace Queo.Commons.Persistence.Generic
+{
+    public interface IGenericDao<T, in TKey>
+    {
         /// <summary>
         ///     Leert die Session.
         /// </summary>

@@ -1,24 +1,29 @@
-﻿using System;
+using System;
 
-namespace Queo.Commons.Persistence {
+namespace Queo.Commons.Persistence
+{
     /// <summary>
     ///     Basisimplementierung von <see cref="IPageable" />.
     /// </summary>
     /// <remarks>
     ///     Die Seiten sind 1-basiert indiziert, d.h. eine 1 für die PageNumber liefert die erste Seite.
     /// </remarks>
-    public class PageRequest : IPageable {
+    public class PageRequest : IPageable
+    {
         /// <summary>
         ///     Erzeugt eine neue Instanz von <see cref="PageRequest" />.
         /// </summary>
         /// <param name="pageNumber">Die angeforderte Seite (Seitenzählung beginnt mit 1)</param>
         /// <param name="pageSize">Die Anzahl der Elemente pro Seite.</param>
-        public PageRequest(int pageNumber, int pageSize) {
-            if (pageNumber < 1) {
+        public PageRequest(int pageNumber, int pageSize)
+        {
+            if (pageNumber < 1)
+            {
                 throw new ArgumentException("PageNumber darf nicht kleiner als 1 sein.");
             }
 
-            if (pageSize < 0) {
+            if (pageSize < 0)
+            {
                 /*Standard-Implementierung: Ist so gewollt, auch wenn eine Abfrage von 0 Elementen zunächst sinnfrei erscheint.*/
                 throw new ArgumentException("PageSize darf nicht kleiner als 0 sein.");
             }
@@ -31,14 +36,16 @@ namespace Queo.Commons.Persistence {
         /// <summary>
         ///     Ruft den Page-Request ab, der alle Einträge liefert.
         /// </summary>
-        public static PageRequest All {
+        public static PageRequest All
+        {
             get { return new PageRequest(1, int.MaxValue); }
         }
 
         /// <summary>
         ///     Get the first item relatively to the total number of items.
         /// </summary>
-        public int FirstItem {
+        public int FirstItem
+        {
             get { return PageIndex * PageSize; }
         }
 

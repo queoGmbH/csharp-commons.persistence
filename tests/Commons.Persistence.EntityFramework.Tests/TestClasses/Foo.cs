@@ -1,7 +1,9 @@
-﻿using Queo.Commons.Persistence.Generic;
+using Queo.Commons.Persistence.Generic;
 
-namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses {
-    public class Foo : Entity<int> {
+namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses
+{
+    public class Foo : Entity<int>
+    {
 
         public Boo Boo { get; set; }
 

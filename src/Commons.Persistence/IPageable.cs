@@ -1,8 +1,10 @@
-﻿namespace Queo.Commons.Persistence {
+namespace Queo.Commons.Persistence
+{
     /// <summary>
     ///     Interface for pagination information.
     /// </summary>
-    public interface IPageable {
+    public interface IPageable
+    {
         /// <summary>
         ///     Liefert das erste Element relativ zur Anzahl aller Elemente.
         /// </summary>

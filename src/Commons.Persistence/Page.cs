@@ -1,15 +1,17 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using Queo.Commons.Checks;
 
-namespace Queo.Commons.Persistence {
+namespace Queo.Commons.Persistence
+{
     /// <summary>
     ///     Basisimplementierung für eine Seite beim Paging.
     /// </summary>
     /// <typeparam name="T">Der Typ der Elemente aus denen die Seite besteht.</typeparam>
-    public class Page<T> : IPage<T> {
+    public class Page<T> : IPage<T>
+    {
         private readonly IList<T> _content;
         private readonly IPageable _pageable;
         private readonly long _totalCount;
@@ -20,7 +22,8 @@ namespace Queo.Commons.Persistence {
         /// <param name="content">Die Liste mit den Elementen für die Seite.</param>
         /// <param name="pageable">Die Informationen zur Seite.</param>
         /// <param name="totalCount">Die Anzahl aller Elemente.</param>
-        public Page(IList<T> content, IPageable pageable, long totalCount) {
+        public Page(IList<T> content, IPageable pageable, long totalCount)
+        {
             Require.NotNull(content, "content");
             Require.NotNull(pageable, "pageable");
             _content = content;
@@ -34,63 +37,72 @@ namespace Queo.Commons.Persistence {
         /// <param name="content">Die Liste mit den Elementen für die Seite</param>
         /// <param name="totalCount">Die Anzahl aller Elemente.</param>
         public Page(IList<T> content, long totalCount)
-            : this(content, new PageRequest(1, null == content ? 0 : content.Count), totalCount) {
+            : this(content, new PageRequest(1, null == content ? 0 : content.Count), totalCount)
+        {
         }
 
         /// <summary>
         ///     Liefert das zugrundeliegende <see cref="IPageable" /> mit dem die Seite generiert wurde.
         /// </summary>
-        public IPageable Pageable {
+        public IPageable Pageable
+        {
             get { return _pageable; }
         }
 
         /// <summary>
         ///     Gibt an ob es eine weitere Seite gibt.
         /// </summary>
-        public bool HasNextPage {
+        public bool HasNextPage
+        {
             get { return PageNumber * Size < TotalElements; }
         }
 
         /// <summary>
         ///     Gibt an ob diese Seite einen vorhergehende Seite hat.
         /// </summary>
-        public bool HasPreviousPage {
+        public bool HasPreviousPage
+        {
             get { return PageNumber > 1; }
         }
 
         /// <summary>
         ///     Liefert die Anzahl der Elemente auf dieser Seite.
         /// </summary>
-        public int NumberOfElements {
+        public int NumberOfElements
+        {
             get { return _content.Count; }
         }
 
         /// <summary>
         ///     Liefert die Seitenzahl. Die Seitenanzahl ist 0-basiert. und kleiner als die Gesamtseitenanzahl.
         /// </summary>
-        public int PageNumber {
+        public int PageNumber
+        {
             get { return _pageable.PageNumber; }
         }
 
         /// <summary>
         ///     Liefert die Größe der Seite (Die maximale Anzahl an Einträgen pro Seite).
         /// </summary>
-        public int Size {
+        public int Size
+        {
             get { return _pageable.PageSize; }
         }
 
         /// <summary>
         ///     Liefert die Anzahl an Elementen der gesamten Liste
         /// </summary>
-        public long TotalElements {
+        public long TotalElements
+        {
             get { return _totalCount; }
         }
 
         /// <summary>
         ///     Liefert die Gesamtanzahl an Seiten
         /// </summary>
-        public int TotalPages {
-            get { return (int) Math.Ceiling(TotalElements / (double) Size); }
+        public int TotalPages
+        {
+            get { return (int)Math.Ceiling(TotalElements / (double)Size); }
         }
 
         /// <summary>
@@ -100,7 +112,8 @@ namespace Queo.Commons.Persistence {
         ///     Ein <see cref="T:System.Collections.Generic.IEnumerator`1" />, der zum Durchlaufen der Auflistung verwendet werden
         ///     kann.
         /// </returns>
-        public IEnumerator<T> GetEnumerator() {
+        public IEnumerator<T> GetEnumerator()
+        {
             return _content.GetEnumerator();
         }
 
@@ -111,7 +124,8 @@ namespace Queo.Commons.Persistence {
         ///     Ein <see cref="T:System.Collections.IEnumerator" />-Objekt, das zum Durchlaufen der Auflistung verwendet werden
         ///     kann.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator() {
+        IEnumerator IEnumerable.GetEnumerator()
+        {
             return GetEnumerator();
         }
     }

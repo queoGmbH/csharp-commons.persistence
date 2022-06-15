@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
-namespace Queo.Commons.Persistence.Generic {
-    public interface IEntityDao<T, TKey> : IGenericDao<T, TKey> where T : Entity<TKey> {
+namespace Queo.Commons.Persistence.Generic
+{
+    public interface IEntityDao<T, TKey> : IGenericDao<T, TKey> where T : Entity<TKey>
+    {
         /// <summary>
         ///     Sucht nach <see cref="T" /> anhand einer Liste mit Ids.
         /// </summary>
