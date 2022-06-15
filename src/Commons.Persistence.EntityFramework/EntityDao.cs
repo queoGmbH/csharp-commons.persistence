@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -29,6 +30,16 @@ namespace Queo.Commons.Persistence.EntityFramework
         }
 
         /// <summary>
+        ///     Sucht asynchron nach <see cref="T" /> anhand einer Liste mit Ids.
+        /// </summary>
+        /// <param name="businessIds"></param>
+        /// <returns></returns>
+        public virtual async Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
+        {
+            return await DbContext.Set<TEntity>().Where(x => businessIds.Contains(x.BusinessId)).ToListAsync();
+        }
+
+        /// <summary>
         ///     Liefert das Entity mit der entsprechenden BusinessId.
         /// </summary>
         /// <param name="businessId">die BusinessId</param>
@@ -36,6 +47,16 @@ namespace Queo.Commons.Persistence.EntityFramework
         public virtual TEntity GetByBusinessId(Guid businessId)
         {
             return DbContext.Set<TEntity>().Single(x => x.BusinessId == businessId);
+        }
+
+        /// <summary>
+        ///     Liefert asynchron das Entity mit der entsprechenden BusinessId.
+        /// </summary>
+        /// <param name="businessId"></param>
+        /// <returns></returns>
+        public virtual async Task<TEntity> GetByBusinessIdAsync(Guid businessId)
+        {
+            return await DbContext.Set<TEntity>().SingleAsync(x => x.BusinessId == businessId);
         }
     }
 }
