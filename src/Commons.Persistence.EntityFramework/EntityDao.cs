@@ -17,11 +17,11 @@ namespace Queo.Commons.Persistence.EntityFramework
         }
 
         /// <summary>
-        ///     Sucht nach <see cref="T" /> anhand einer Liste mit Ids.
+        ///     Search for <see cref="T" /> from a list of Ids.
         /// </summary>
         /// <param name="businessIds">
-        ///     Liste mit Guids in denen die <see cref="Entity.BusinessId" /> einer <see cref="T" />
-        ///     enthalten sein muss, damit sie gefunden wird.
+        ///     List of Guids in which the <see cref="Entity.BusinessId" /> of a <see cref="T" />
+        ///     must be included for it to be found.
         /// </param>
         /// <returns></returns>
         public virtual IList<TEntity> FindByBusinessIds(IList<Guid> businessIds)
@@ -30,9 +30,11 @@ namespace Queo.Commons.Persistence.EntityFramework
         }
 
         /// <summary>
-        ///     Sucht asynchron nach <see cref="T" /> anhand einer Liste mit Ids.
+        ///     Search asynchronously for <see cref="T" /> from a list of Ids.
         /// </summary>
         /// <param name="businessIds"></param>
+        ///     List of Guids in which the <see cref="Entity.BusinessId" /> of a <see cref="T" />
+        ///     must be included for it to be found.
         /// <returns></returns>
         public virtual async Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
         {
@@ -40,20 +42,20 @@ namespace Queo.Commons.Persistence.EntityFramework
         }
 
         /// <summary>
-        ///     Liefert das Entity mit der entsprechenden BusinessId.
+        ///     Returns the entity with the appropriate BusinessId.
         /// </summary>
         /// <param name="businessId">die BusinessId</param>
-        /// <returns>Das Entity</returns>
+        /// <returns>The Entity</returns>
         public virtual TEntity GetByBusinessId(Guid businessId)
         {
             return DbContext.Set<TEntity>().Single(x => x.BusinessId == businessId);
         }
 
         /// <summary>
-        ///     Liefert asynchron das Entity mit der entsprechenden BusinessId.
+        ///     Returns asynchronously the entity with the appropriate BusinessId.
         /// </summary>
         /// <param name="businessId"></param>
-        /// <returns></returns>
+        /// <returns>The Entity</returns>
         public virtual async Task<TEntity> GetByBusinessIdAsync(Guid businessId)
         {
             return await DbContext.Set<TEntity>().SingleAsync(x => x.BusinessId == businessId);
