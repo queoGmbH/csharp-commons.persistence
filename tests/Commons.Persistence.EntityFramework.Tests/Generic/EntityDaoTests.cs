@@ -20,7 +20,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
         //GIVEN: <comment of assumptions>
         [OneTimeSetUp]
         protected void Setup()
-        {            
+        {
             contextOptions = GetDbContextOptions<TestDbContext>();
             expectedEntity = new EntityWithStringKey("Die ID");
             expectedEntity.Name = "Testobjekt";
