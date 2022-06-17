@@ -22,13 +22,12 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
 
         public TEntity GetByBusinessId(Guid businessId)
         {
-            TEntity entity = DbSetWithIncludedProperties().Single(e => e.BusinessId == businessId);
-            return entity;
+            return DbSetWithIncludedProperties().Single(e => e.BusinessId == businessId);
+            
         }
         public async Task<TEntity> GetByBusinessIdAsync(Guid businessId)
         {
-            TEntity entity = await DbSetWithIncludedProperties().SingleAsync(e => e.BusinessId == businessId);
-            return entity;
+            return await DbSetWithIncludedProperties().SingleAsync(e => e.BusinessId == businessId);
         }
     }
 }
