@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Queo.Commons.Persistence.Generic
 {
@@ -28,6 +29,15 @@ namespace Queo.Commons.Persistence.Generic
         bool Exists(TKey primaryKey);
 
         /// <summary>
+        ///     Überprüft, ob es ein Entity mit dem Primärschlüssel gibt.
+        /// </summary>
+        /// <param name="primaryKey">Der Primärschlüssel.</param>
+        /// <returns>
+        ///     <code>true</code>, wenn ein Entity mit dem angegebenen Primärschlüssel existiert, sonst <code>false</code>
+        /// </returns>
+        Task<bool> ExistsAsync(TKey primaryKey);
+
+        /// <summary>
         ///     Übernimmt alle offenen Änderungen in die Datenbank.
         /// </summary>
         /// <remarks>
@@ -38,11 +48,28 @@ namespace Queo.Commons.Persistence.Generic
         void Flush();
 
         /// <summary>
+        ///     Übernimmt alle offenen Änderungen in die Datenbank.
+        /// </summary>
+        /// <remarks>
+        ///     Im Allgemeinen braucht diese Methode nicht aufgerufen werden, da die Steuerung
+        ///     implizit über die Session bzw. die Transaktion und über den FlushMode erfolgt.
+        ///     In bestimmten Fällen ist es aber hilfreich, wie z.B. bei Testfällen.
+        /// </remarks>
+        Task FlushAsync();
+
+        /// <summary>
         ///     Liefert das Entity mit dem angegebenen Primary Key.
         /// </summary>
         /// <param name="primaryKey"></param>
         /// <returns></returns>
         T Get(TKey primaryKey);
+
+        /// <summary>
+        ///     Liefert das Entity mit dem angegebenen Primary Key.
+        /// </summary>
+        /// <param name="primaryKey"></param>
+        /// <returns></returns>
+        Task<T> GetAsync(TKey primaryKey);
 
         /// <summary>
         ///     Liefert eine Liste mit allen Entitäten.
@@ -51,10 +78,22 @@ namespace Queo.Commons.Persistence.Generic
         IList<T> GetAll();
 
         /// <summary>
+        ///     Liefert eine Liste mit allen Entitäten.
+        /// </summary>
+        /// <returns>Liste mit allen Entities.</returns>
+        Task<IList<T>> GetAllAsync();
+
+        /// <summary>
         ///     Liefert die Anzahl aller Objekte.
         /// </summary>
         /// <returns>Anzahl der Objekte.</returns>
         long GetCount();
+
+        /// <summary>
+        ///     Liefert die Anzahl aller Objekte.
+        /// </summary>
+        /// <returns>Anzahl der Objekte.</returns>
+        Task<long> GetCountAsync();
 
         /// <summary>
         ///     Speichert die übergebene Entität
@@ -64,6 +103,13 @@ namespace Queo.Commons.Persistence.Generic
         T Save(T entity);
 
         /// <summary>
+        ///     Speichert die übergebene Entität
+        /// </summary>
+        /// <param name="entity">Das zu speichernde Entity</param>
+        /// <returns>Das gespeicherte Entity</returns>
+        Task<T> SaveAsync(T entity);
+
+        /// <summary>
         ///     Speichert alle Entitäten die in der übergebene Liste enthalten sind
         /// </summary>
         /// <param name="entities">Liste mit zu speichernden Entities.</param>
@@ -71,10 +117,24 @@ namespace Queo.Commons.Persistence.Generic
         IList<T> Save(IList<T> entities);
 
         /// <summary>
+        ///     Speichert alle Entitäten die in der übergebene Liste enthalten sind
+        /// </summary>
+        /// <param name="entities">Liste mit zu speichernden Entities.</param>
+        /// <returns>Liste mit gespeicherten Entities</returns>
+        Task<IList<T>> SaveAsync(IList<T> entities);
+
+        /// <summary>
         /// Sucht nach <see cref="T"/> anhand einer Liste mit Ids. 
         /// </summary>
         /// <param name="ids">Liste mit Ids in denen die <see cref="Entity.Id"/> einer <see cref="T"/> enthalten sein muss, damit sie gefunden wird.</param>
         /// <returns></returns>
         IList<T> FindByIds(TKey[] ids);
+
+        /// <summary>
+        /// Sucht nach <see cref="T"/> anhand einer Liste mit Ids. 
+        /// </summary>
+        /// <param name="ids">Liste mit Ids in denen die <see cref="Entity.Id"/> einer <see cref="T"/> enthalten sein muss, damit sie gefunden wird.</param>
+        /// <returns></returns>
+        Task<IList<T>> FindByIdsAsync(TKey[] ids);
     }
 }
