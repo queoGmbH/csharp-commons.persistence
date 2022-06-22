@@ -44,7 +44,7 @@ namespace Queo.Commons.Persistence.EntityFramework
         /// <summary>
         ///     Returns the entity with the appropriate BusinessId.
         /// </summary>
-        /// <param name="businessId">die BusinessId</param>
+        /// <param name="businessId">the BusinessId</param>
         /// <returns>The Entity</returns>
         public virtual TEntity GetByBusinessId(Guid businessId)
         {
@@ -54,7 +54,7 @@ namespace Queo.Commons.Persistence.EntityFramework
         /// <summary>
         ///     Returns asynchronously the entity with the appropriate BusinessId.
         /// </summary>
-        /// <param name="businessId"></param>
+        /// <param name="businessId">the BusinessId</param>
         /// <returns>The Entity</returns>
         public virtual async Task<TEntity> GetByBusinessIdAsync(Guid businessId)
         {
