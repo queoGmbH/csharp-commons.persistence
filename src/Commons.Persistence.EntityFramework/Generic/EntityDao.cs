@@ -19,7 +19,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         {
             throw new NotImplementedException();
         }
-        public async Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
+        public Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
         {
             throw new NotImplementedException();
         }
