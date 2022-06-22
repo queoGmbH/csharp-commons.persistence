@@ -20,120 +20,124 @@ namespace Queo.Commons.Persistence.Generic
         void Delete(T entity);
 
         /// <summary>
-        ///     Überprüft, ob es ein Entity mit dem Primärschlüssel gibt.
+        ///     Checks whether there is an entity with the primary key.
         /// </summary>
-        /// <param name="primaryKey">Der Primärschlüssel.</param>
+        /// <param name="primaryKey">The primary key.</param>
         /// <returns>
-        ///     <code>true</code>, wenn ein Entity mit dem angegebenen Primärschlüssel existiert, sonst <code>false</code>
+        ///     <code>true</code>, if an entity with the specified primary key exists, otherwise <code>false</code>
         /// </returns>
         bool Exists(TKey primaryKey);
 
         /// <summary>
-        ///     Überprüft, ob es ein Entity mit dem Primärschlüssel gibt.
+        ///     Checks asynchronously whether there is an entity with the primary key.
         /// </summary>
-        /// <param name="primaryKey">Der Primärschlüssel.</param>
+        /// <param name="primaryKey">The primary key.</param>
         /// <returns>
-        ///     <code>true</code>, wenn ein Entity mit dem angegebenen Primärschlüssel existiert, sonst <code>false</code>
+        ///     <code>true</code>, if an entity with the specified primary key exists, otherwise <code>false</code>
         /// </returns>
         Task<bool> ExistsAsync(TKey primaryKey);
 
         /// <summary>
-        ///     Übernimmt alle offenen Änderungen in die Datenbank.
+        ///     Transfers all open changes to the database.
         /// </summary>
         /// <remarks>
-        ///     Im Allgemeinen braucht diese Methode nicht aufgerufen werden, da die Steuerung
-        ///     implizit über die Session bzw. die Transaktion und über den FlushMode erfolgt.
-        ///     In bestimmten Fällen ist es aber hilfreich, wie z.B. bei Testfällen.
+        ///     In general, this method does not need to be called, as the control
+        ///     is implicitly via the session or the transaction and via the FlushMode. 
+        ///     In certain cases, however, it is helpful, e.g. for test cases.
         /// </remarks>
         void Flush();
 
         /// <summary>
-        ///     Übernimmt alle offenen Änderungen in die Datenbank.
+        ///     Transfers all open changes to the database asynchronously.
         /// </summary>
         /// <remarks>
-        ///     Im Allgemeinen braucht diese Methode nicht aufgerufen werden, da die Steuerung
-        ///     implizit über die Session bzw. die Transaktion und über den FlushMode erfolgt.
-        ///     In bestimmten Fällen ist es aber hilfreich, wie z.B. bei Testfällen.
+        ///     In general, this method does not need to be called, as the control
+        ///     is implicitly via the session or the transaction and via the FlushMode. 
+        ///     In certain cases, however, it is helpful, e.g. for test cases.
         /// </remarks>
         Task FlushAsync();
 
         /// <summary>
-        ///     Liefert das Entity mit dem angegebenen Primary Key.
+        ///     Returns the entity with the specified primary key.
         /// </summary>
         /// <param name="primaryKey"></param>
         /// <returns></returns>
         T Get(TKey primaryKey);
 
         /// <summary>
-        ///     Liefert das Entity mit dem angegebenen Primary Key.
+        ///     Returns the entity with the specified primary key asynchronously.
         /// </summary>
         /// <param name="primaryKey"></param>
         /// <returns></returns>
         Task<T> GetAsync(TKey primaryKey);
 
         /// <summary>
-        ///     Liefert eine Liste mit allen Entitäten.
+        ///     Returns a list with all entities.
         /// </summary>
-        /// <returns>Liste mit allen Entities.</returns>
+        /// <returns>List with all entities.</returns>
         IList<T> GetAll();
 
         /// <summary>
-        ///     Liefert eine Liste mit allen Entitäten.
+        ///     Returns a list with all entities asynchronously.
         /// </summary>
-        /// <returns>Liste mit allen Entities.</returns>
+        /// <returns>List with all entities.</returns>
         Task<IList<T>> GetAllAsync();
 
         /// <summary>
-        ///     Liefert die Anzahl aller Objekte.
+        ///     Returns the number of all objects.
         /// </summary>
-        /// <returns>Anzahl der Objekte.</returns>
+        /// <returns>Number of objects.</returns>
         long GetCount();
 
         /// <summary>
-        ///     Liefert die Anzahl aller Objekte.
+        ///     Returns the number of all objects asynchronously.
         /// </summary>
-        /// <returns>Anzahl der Objekte.</returns>
+        /// <returns>Number of objects.</returns>
         Task<long> GetCountAsync();
 
         /// <summary>
-        ///     Speichert die übergebene Entität
+        ///     Saves the passed entity.
         /// </summary>
-        /// <param name="entity">Das zu speichernde Entity</param>
-        /// <returns>Das gespeicherte Entity</returns>
+        /// <param name="entity">The entity to be saved</param>
+        /// <returns>The stored entity</returns>
         T Save(T entity);
 
         /// <summary>
-        ///     Speichert die übergebene Entität
+        ///     Saves the passed entity asynchronously.
         /// </summary>
-        /// <param name="entity">Das zu speichernde Entity</param>
-        /// <returns>Das gespeicherte Entity</returns>
+        /// <param name="entity">The entity to be saved</param>
+        /// <returns>The stored entity</returns>
         Task<T> SaveAsync(T entity);
 
         /// <summary>
-        ///     Speichert alle Entitäten die in der übergebene Liste enthalten sind
+        ///     Saves all entities contained in the passed list.
         /// </summary>
-        /// <param name="entities">Liste mit zu speichernden Entities.</param>
-        /// <returns>Liste mit gespeicherten Entities</returns>
+        /// <param name="entities">List of entities to be saved.</param>
+        /// <returns>List with stored entities</returns>
         IList<T> Save(IList<T> entities);
 
         /// <summary>
-        ///     Speichert alle Entitäten die in der übergebene Liste enthalten sind
+        ///     Saves asynchronously all entities that are contained in the passed list.
         /// </summary>
         /// <param name="entities">Liste mit zu speichernden Entities.</param>
         /// <returns>Liste mit gespeicherten Entities</returns>
         Task<IList<T>> SaveAsync(IList<T> entities);
 
         /// <summary>
-        /// Sucht nach <see cref="T"/> anhand einer Liste mit Ids. 
+        ///     Searches for <see cref="T" /> using a list of Ids.
         /// </summary>
-        /// <param name="ids">Liste mit Ids in denen die <see cref="Entity.Id"/> einer <see cref="T"/> enthalten sein muss, damit sie gefunden wird.</param>
+        /// <param name="ids">
+        ///     List of Ids in which the <see cref="Entity.Id" /> of a <see cref="T" /> must be contained in order to be found.
+        /// </param>
         /// <returns></returns>
         IList<T> FindByIds(TKey[] ids);
 
         /// <summary>
-        /// Sucht nach <see cref="T"/> anhand einer Liste mit Ids. 
+        ///     Searches asynchronously for <see cref="T" /> using a list of Ids.
         /// </summary>
-        /// <param name="ids">Liste mit Ids in denen die <see cref="Entity.Id"/> einer <see cref="T"/> enthalten sein muss, damit sie gefunden wird.</param>
+        /// <param name="ids">
+        ///     List of Ids in which the<see cref= "Entity.Id" /> of a<see cref="T" /> must be contained in order to be found.
+        /// </param>
         /// <returns></returns>
         Task<IList<T>> FindByIdsAsync(TKey[] ids);
     }
