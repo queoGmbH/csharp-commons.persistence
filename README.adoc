@@ -1,0 +1,35 @@
+= csharp-commons.persistence
+
+== Description
+
+
+== class diagramm 
+
+== Example
+Wir wollen mit Hilfe von commons.persistance aus einer gegebenen Datenbank, die Anzahl und eine Liste von allen enthaltenen Filmen ermitteln. +
+Dazu:
+
+* im Kontroller neues Dao instanziieren mit einem Integer als Id
+[source, C#]
+....
+private readonly IGenericDao<Movie, int> _movieDao;
+....
+* das Dao dem Konstruktor des Kontrollers übergeben
+[source, C#]
+....
+public MoviesController(IGenericDao<Movie, int> movieDao)
+{
+    _movieDao = movieDao;
+}
+....
+* Anzahl der Filme mit Hilfe des Daos ermitteln
+[source, C#]
+....
+public long AnzahlDerFilme()
+{
+    _movieDao.GetAll(); // gibt eine Liste von Entitäten zurück
+    return _movieDao.GetCount(); //gibt die anzahl der Entitäten zurück
+}
+....
+
+== How to use it
