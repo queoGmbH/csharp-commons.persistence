@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +19,19 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         {
             throw new NotImplementedException();
         }
+        public Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
+        {
+            throw new NotImplementedException();
+        }
 
         public TEntity GetByBusinessId(Guid businessId)
         {
-            TEntity entity = DbSetWithIncludedProperties().Single(e => e.BusinessId == businessId);
-            return entity;
+            return DbSetWithIncludedProperties().Single(e => e.BusinessId == businessId);
+
+        }
+        public async Task<TEntity> GetByBusinessIdAsync(Guid businessId)
+        {
+            return await DbSetWithIncludedProperties().SingleAsync(e => e.BusinessId == businessId);
         }
     }
 }

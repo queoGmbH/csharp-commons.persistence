@@ -1,25 +1,43 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Queo.Commons.Persistence.Generic
 {
     public interface IEntityDao<T, TKey> : IGenericDao<T, TKey> where T : Entity<TKey>
     {
         /// <summary>
-        ///     Sucht nach <see cref="T" /> anhand einer Liste mit Ids.
+        ///     Searches for <see cref="T" /> using a list of Ids.
         /// </summary>
         /// <param name="businessIds">
-        ///     Liste mit Guids in denen die <see cref="Entity.BusinessId" /> einer <see cref="T" />
-        ///     enthalten sein muss, damit sie gefunden wird.
+        ///     List of Guids in which the <see cref="Entity.BusinessId" /> of a <see cref="T" />
+        ///     must be included for it to be found.
         /// </param>
         /// <returns></returns>
         IList<T> FindByBusinessIds(IList<Guid> businessIds);
 
         /// <summary>
-        ///     Liefert das Entity mit der entsprechenden BusinessId.
+        ///     Searches asynchronously for <see cref="T" /> from a list of Ids.
         /// </summary>
-        /// <param name="businessId">die BusinessId</param>
-        /// <returns>Das Entity</returns>
+        /// <param name="businessIds">
+        ///     List of Guids in which the <see cref="Entity.BusinessId" /> of a <see cref="T" />
+        ///     must be included for it to be found.
+        /// </param>
+        /// <returns></returns>
+        Task<IList<T>> FindByBusinessIdsAsync(IList<Guid> businessIds);
+
+        /// <summary>
+        ///     Returns the entity with the appropriate BusinessId.
+        /// </summary>
+        /// <param name="businessId">the BusinessId</param>
+        /// <returns>The entity</returns>
         T GetByBusinessId(Guid businessId);
+
+        /// <summary>
+        ///     Returns asynchronously the entity with the appropriate BusinessId.
+        /// </summary>
+        /// <param name="businessId">the BusinessId</param>
+        /// <returns>The entity</returns>
+        Task<T> GetByBusinessIdAsync(Guid businessId);
     }
 }
