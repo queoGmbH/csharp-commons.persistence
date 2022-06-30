@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -29,20 +30,22 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Abstraktes Property zur Angabe der bei einer Abfrage explizit mit einzuschließenden
-        ///     referenzierten Entitäten, die beim Laden einer Entität mitgeladen werden sollen (Eager-Loading).
-        ///     Müssen bei Bedarf von spezifischeren DAOs entsprechend überschrieben werden.
+        ///     Abstract property to specify the referenced entities to be explicitly included
+        ///     in a query that should be loaded when an entity is loaded (Eager-Loading).
+        ///     Must be overritten by more specific DAOs if required.
         /// </summary>
         protected virtual IEnumerable<Expression<Func<TEntity, object>>> PropertiesToInclude
         {
             get { return new Expression<Func<TEntity, object>>[0]; }
         }
 
-        /// <summary>
-        ///     Leert die Session.
+        /// <summary>  
+        ///     Empty the session.
         /// </summary>
         /// <remarks>
         ///     Die Methode sollte nur in Testfällen verwendet werden.
+        ///
+        ///     The method should only be used in test cases.
         /// </remarks>
         public virtual void Clear()
         {
@@ -50,7 +53,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Löscht die übergebene Entität
+        ///     Deletes the passed entity.
         /// </summary>
         /// <param name="entity"></param>
         public virtual void Delete(TEntity entity)
@@ -59,11 +62,11 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Überprüft, ob es ein Entity mit dem Primärschlüssel gibt.
+        ///     Checks whether there is an entity with the primary key.
         /// </summary>
-        /// <param name="primaryKey">Der Primärschlüssel.</param>
+        /// <param name="primaryKey">The primary key.</param>
         /// <returns>
-        ///     <code>true</code>, wenn ein Entity mit dem angegebenen Primärschlüssel existiert, sonst <code>false</code>
+        ///     <code>true</code>, if an entity with the specified primary key exists, otherwise <code>false</code>
         /// </returns>
         public virtual bool Exists(TKey primaryKey)
         {
@@ -77,9 +80,27 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Sucht nach allen <see cref="T" />
+        ///     Checks asynchronously whether there is an entity with the primary key.
         /// </summary>
-        /// <param name="pageable">Enthält Informationen für Pagination</param>
+        /// <param name="primaryKey">The primary key.</param>
+        /// <returns>
+        ///     <code>true</code>, if an entity with the specified primary key exists, otherwise <code>false</code>
+        /// </returns>
+        public virtual async Task<bool> ExistsAsync(TKey primaryKey)
+        {
+            TEntity entity = await _dbContext.FindAsync<TEntity>(primaryKey);
+            if (entity == null)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Searches for all <see cref="T" />
+        /// </summary>
+        /// <param name="pageable">Contains information for pagination</param>
         /// <returns></returns>
         public virtual IPage<TEntity> Find(IPageable pageable)
         {
@@ -89,11 +110,22 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Sucht nach <see cref="T" /> anhand einer Liste mit Ids.
+        ///     Searches asynchronously for all <see cref="T" />
+        /// </summary>
+        /// <param name="pageable">Contains information for pagination</param>
+        /// <returns></returns>
+        public virtual async Task<IPage<TEntity>> FindAsync(IPageable pageable)
+        {
+            int totalCount = await _dbContext.Set<TEntity>().CountAsync();
+            IList<TEntity> entities = await _dbContext.Set<TEntity>().Skip(pageable.FirstItem).Take(pageable.PageSize).ToListAsync();
+            return new Page<TEntity>(entities, pageable, totalCount);
+        }
+
+        /// <summary>
+        ///     Searches for <see cref="T" /> using a list of Ids.
         /// </summary>
         /// <param name="ids">
-        ///     Liste mit Ids in denen die <see cref="Entity.Id" /> einer <see cref="T" /> enthalten sein muss, damit
-        ///     sie gefunden wird.
+        ///     List of Ids in which the <see cref="Entity.Id" /> of a <see cref="T" /> must be contained in order to be found.
         /// </param>
         /// <returns></returns>
         public virtual IList<TEntity> FindByIds(TKey[] ids)
@@ -112,12 +144,34 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Übernimmt alle offenen Änderungen in die Datenbank.
+        ///     Searches asynchronously for <see cref="T" /> using a list of Ids.
+        /// </summary>
+        /// <param name="ids">
+        ///     List of Ids in which the<see cref= "Entity.Id" /> of a<see cref="T" /> must be contained in order to be found.
+        /// </param>
+        /// <returns></returns>
+        public virtual async Task<IList<TEntity>> FindByIdsAsync(TKey[] ids)
+        {
+            List<TEntity> entities = new List<TEntity>();
+            foreach (TKey id in ids)
+            {
+                TEntity entity = await GetAsync(id);
+                if (entity != null)
+                {
+                    entities.Add(entity);
+                }
+            }
+
+            return entities;
+        }
+
+        /// <summary>
+        ///     Transfers all open changes to the database.
         /// </summary>
         /// <remarks>
-        ///     Im Allgemeinen braucht diese Methode nicht aufgerufen werden, da die Steuerung
-        ///     implizit über die Session bzw. die Transaktion und über den FlushMode erfolgt.
-        ///     In bestimmten Fällen ist es aber hilfreich, wie z.B. bei Testfällen.
+        ///     In general, this method does not need to be called, as the control
+        ///     is implicitly via the session or the transaction and via the FlushMode. 
+        ///     In certain cases, however, it is helpful, e.g. for test cases.
         /// </remarks>
         public void Flush()
         {
@@ -125,7 +179,20 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Liefert das Entity mit dem angegebenen Primary Key.
+        ///     Transfers all open changes to the database asynchronously.
+        /// </summary>
+        /// <remarks>
+        ///     In general, this method does not need to be called, as the control
+        ///     is implicitly via the session or the transaction and via the FlushMode. 
+        ///     In certain cases, however, it is helpful, e.g. for test cases.
+        /// </remarks>
+        public async Task FlushAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        ///     Returns the entity with the specified primary key.
         /// </summary>
         /// <param name="primaryKey"></param>
         /// <returns></returns>
@@ -141,9 +208,25 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Liefert eine Liste mit allen Entitäten.
+        ///     Returns the entity with the specified primary key asynchronously.
         /// </summary>
-        /// <returns>Liste mit allen Entities.</returns>
+        /// <param name="primaryKey"></param>
+        /// <returns></returns>
+        public virtual async Task<TEntity> GetAsync(TKey primaryKey)
+        {
+            IReadOnlyList<IProperty> keyProperties = GetKeyProperties(typeof(TEntity));
+            ParameterExpression entityParameter = Expression.Parameter(typeof(TEntity), "e");
+            Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey }), entityParameter);
+
+            Expression<Func<TEntity, bool>> keyExpression = Expression.Lambda<Func<TEntity, bool>>(expressionBody, entityParameter);
+            TEntity entity = await DbSetWithIncludedProperties().FirstOrDefaultAsync(keyExpression);
+            return entity;
+        }
+
+        /// <summary>
+        ///     Returns a list with all entities.
+        /// </summary>
+        /// <returns>List with all entities.</returns>
         public virtual IList<TEntity> GetAll()
         {
             List<TEntity> entities = _dbContext.Set<TEntity>().ToList();
@@ -151,9 +234,19 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Liefert die Anzahl aller Objekte.
+        ///     Returns a list with all entities asynchronously.
         /// </summary>
-        /// <returns>Anzahl der Objekte.</returns>
+        /// <returns>List with all entities.</returns>
+        public virtual async Task<IList<TEntity>> GetAllAsync()
+        {
+            List<TEntity> entities = await _dbContext.Set<TEntity>().ToListAsync();
+            return entities;
+        }
+
+        /// <summary>
+        ///     Returns the number of all objects.
+        /// </summary>
+        /// <returns>Number of objects.</returns>
         public virtual long GetCount()
         {
             int count = _dbContext.Set<TEntity>().Count();
@@ -161,10 +254,20 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Speichert die übergebene Entität
+        ///     Returns the number of all objects asynchronously.
         /// </summary>
-        /// <param name="entity">Das zu speichernde Entity</param>
-        /// <returns>Das gespeicherte Entity</returns>
+        /// <returns>Number of objects.</returns>
+        public virtual async Task<long> GetCountAsync()
+        {
+            int count = await _dbContext.Set<TEntity>().CountAsync();
+            return count;
+        }
+
+        /// <summary>
+        ///     Saves the passed entity.
+        /// </summary>
+        /// <param name="entity">The entity to be saved</param>
+        /// <returns>The stored entity</returns>
         public virtual TEntity Save(TEntity entity)
         {
             EntityEntry<TEntity> entityEntry = _dbContext.Add(entity);
@@ -172,10 +275,21 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Speichert alle Entitäten die in der übergebene Liste enthalten sind
+        ///     Saves the passed entity asynchronously.
         /// </summary>
-        /// <param name="entities">Liste mit zu speichernden Entities.</param>
-        /// <returns>Liste mit gespeicherten Entities</returns>
+        /// <param name="entity">The entity to be saved</param>
+        /// <returns>The stored entity</returns>
+        public virtual async Task<TEntity> SaveAsync(TEntity entity)
+        {
+            EntityEntry<TEntity> entityEntry = await _dbContext.AddAsync(entity);
+            return entityEntry.Entity;
+        }
+
+        /// <summary>
+        ///     Saves all entities contained in the passed list.
+        /// </summary>
+        /// <param name="entities">List of entities to be saved.</param>
+        /// <returns>List with stored entities</returns>
         public virtual IList<TEntity> Save(IList<TEntity> entities)
         {
             _dbContext.AddRange(entities);
@@ -183,8 +297,19 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         }
 
         /// <summary>
-        ///     Hilfsmethode zur Inkludierung aller über die Eigenschaft (<see cref="PropertiesToInclude" />) angegebenen
-        ///     Referenzen, die beim Laden von Entitäten mitgeladen werden sollen (Eager-Loading).
+        ///     Saves asynchronously all entities that are contained in the passed list.
+        /// </summary>
+        /// <param name="entities">Liste mit zu speichernden Entities.</param>
+        /// <returns>Liste mit gespeicherten Entities</returns>
+        public virtual async Task<IList<TEntity>> SaveAsync(IList<TEntity> entities)
+        {
+            await _dbContext.AddRangeAsync(entities);
+            return entities;
+        }
+
+        /// <summary>
+        ///     Helper method for including all references specified by the property (<see cref="PropertiesToInclude" />)
+        ///     that are to be loaded when entities are loaded (eager loading).
         /// </summary>
         /// <returns></returns>
         protected virtual IQueryable<TEntity> DbSetWithIncludedProperties()
