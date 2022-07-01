@@ -1,20 +1,22 @@
 = csharp-commons.persistence
 
 == Description
-
+To be able to query or change data persistently in a database, for example. 
 
 == class diagramm 
+image:images/Klassendiagramm_commons_persistance.png["Klassendiagramm"]
+
 
 == Example
-Wir wollen mit Hilfe von commons.persistance aus einer gegebenen Datenbank, die Anzahl und eine Liste von allen enthaltenen Filmen ermitteln. +
-Dazu:
+We want to use commons.persistance to get the number and a list of all movies contained in a given database. +
+Steps:
 
-* im Kontroller neues Dao instanziieren mit einem Integer als Id
+* instantiate new Dao in the controller class with an integer as Id
 [source, C#]
 ....
 private readonly IGenericDao<Movie, int> _movieDao;
 ....
-* das Dao dem Konstruktor des Kontrollers übergeben
+* add the dao to the constructor of the controller
 [source, C#]
 ....
 public MoviesController(IGenericDao<Movie, int> movieDao)
@@ -22,7 +24,8 @@ public MoviesController(IGenericDao<Movie, int> movieDao)
     _movieDao = movieDao;
 }
 ....
-* Anzahl der Filme mit Hilfe des Daos ermitteln
+
+* Determine the number of films with the help of the Daos
 [source, C#]
 ....
 public long AnzahlDerFilme()
@@ -33,3 +36,12 @@ public long AnzahlDerFilme()
 ....
 
 == How to use it
+* include Nuget-Package (queo.commons.persistance)
+[source, ps]
+....
+Find-Package queo.commons.persistance 
+Install-Package queo.commons.persistance -ProjectName MyProject
+....
+* instantiate new Dao in the controller class
+* add the dao to the constructor of the controller
+* now you can use the Dao
