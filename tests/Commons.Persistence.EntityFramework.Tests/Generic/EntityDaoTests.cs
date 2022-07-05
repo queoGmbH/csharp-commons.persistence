@@ -20,15 +20,19 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
         private EntityWithStringKey expectedEntity;
 
         //GIVEN: <comment of assumptions>
-        [OneTimeSetUp]
+        [SetUp]
         protected void Setup()
         {
+            
             contextOptions = GetDbContextOptions<TestDbContext>();
             expectedEntity = new EntityWithStringKey("Die ID");
             expectedEntity.Name = "Testobjekt";
 
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
 
                 entityDao.Save(expectedEntity);
@@ -87,7 +91,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
-                EntityWithStringKey entity1 = new EntityWithStringKey("Eine Id");
+                EntityWithStringKey entity1 = new EntityWithStringKey("Erste Id");
                 EntityWithStringKey entity2 = new EntityWithStringKey("Zweite Id");
                 EntityWithStringKey entity3 = new EntityWithStringKey("Dritte Id");
                 EntityWithStringKey entity4 = new EntityWithStringKey("Vierte Id");
@@ -121,7 +125,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
-                EntityWithStringKey entity1 = new EntityWithStringKey("Eine Id");
+                EntityWithStringKey entity1 = new EntityWithStringKey("Erste Id");
                 EntityWithStringKey entity2 = new EntityWithStringKey("Zweite Id");
                 EntityWithStringKey entity3 = new EntityWithStringKey("Dritte Id");
                 EntityWithStringKey entity4 = new EntityWithStringKey("Vierte Id");
