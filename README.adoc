@@ -3,7 +3,7 @@
 == Description
 To be able to query or change data persistently in a database, for example. 
 
-== class diagramm 
+== Class diagramm 
 image:images/Klassendiagramm_commons_persistance.png["Klassendiagramm"]
 
 
