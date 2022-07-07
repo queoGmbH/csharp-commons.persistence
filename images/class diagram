@@ -1,0 +1,25 @@
+@startuml
+namespace commons.persistance{
+
+namespace Generic {
+    interface IEntityDao 
+    interface IGenericDao
+    IGenericDao <|-- IEntityDao
+  }
+  class Entity
+  Generic.Entity <|---down Entity
+}
+namespace EntityFramework{
+  namespace Generic {
+    class GenericDao<TEntity, TKey>
+    class EntityDao<TEntity, TKey>
+    GenericDao <|-- EntityDao   
+  }
+class EntityDao<TEntity>
+Generic.EntityDao <|---down EntityDao
+}
+
+commons.persistance <|..-down EntityFramework :<<use>>
+commons.persistance.Generic.IEntityDao <|---down EntityFramework.Generic.GenericDao :<<implement>>
+
+@enduml
