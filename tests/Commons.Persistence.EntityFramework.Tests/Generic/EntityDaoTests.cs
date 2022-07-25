@@ -81,11 +81,9 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 actualEntity.Should().BeEquivalentTo(expectedEntity);
             }
         }
-
-        [Test]
-        public void TestFindByBusinessIds()
+        private List<EntityWithStringKey> LoadTestEntities(out Guid[] idsToFind)
         {
-            Guid[] idsToFind = new Guid[2];
+            idsToFind = new Guid[2];
             List<EntityWithStringKey> expectedEntities = new List<EntityWithStringKey>();
 
             using (TestDbContext context = new TestDbContext(contextOptions))
@@ -102,8 +100,15 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 expectedEntities.Add(entity1);
                 expectedEntities.Add(entity4);
                 context.SaveChanges();
-
             }
+            return expectedEntities;
+        }
+        [Test]
+        public void TestFindByBusinessIds()
+        {
+            Guid[] idsToFind;
+            List<EntityWithStringKey> expectedEntities = LoadTestEntities(out idsToFind);
+
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
@@ -119,25 +124,9 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
         [Test]
         public async Task TestFindByBusinessIdsAsync()
         {
-            Guid[] idsToFind = new Guid[2];
-            List<EntityWithStringKey> expectedEntities = new List<EntityWithStringKey>();
+            Guid[] idsToFind;
+            List<EntityWithStringKey> expectedEntities = LoadTestEntities(out idsToFind);
 
-            using (TestDbContext context = new TestDbContext(contextOptions))
-            {
-                EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
-                EntityWithStringKey entity1 = new EntityWithStringKey("Erste Id");
-                EntityWithStringKey entity2 = new EntityWithStringKey("Zweite Id");
-                EntityWithStringKey entity3 = new EntityWithStringKey("Dritte Id");
-                EntityWithStringKey entity4 = new EntityWithStringKey("Vierte Id");
-                List<EntityWithStringKey> entities = new List<EntityWithStringKey>() { entity1, entity2, entity3, entity4 };
-                entityDao.Save(entities);
-                idsToFind[0] = entity1.BusinessId;
-                idsToFind[1] = entity4.BusinessId;
-                expectedEntities.Add(entity1);
-                expectedEntities.Add(entity4);
-                context.SaveChanges();
-
-            }
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
@@ -149,6 +138,6 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
 
                 actualEntites.Should().BeEquivalentTo(expectedEntities);
             }
-        }
+        }     
     }
 }
