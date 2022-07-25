@@ -138,6 +138,6 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
 
                 actualEntites.Should().BeEquivalentTo(expectedEntities);
             }
-        }     
+        }
     }
 }
