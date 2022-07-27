@@ -17,11 +17,11 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
 
         public IList<TEntity> FindByBusinessIds(IList<Guid> businessIds)
         {
-            throw new NotImplementedException();
+            return DbContext.Set<TEntity>().Where(x => businessIds.Contains(x.BusinessId)).ToList();
         }
-        public Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
+        public async Task<IList<TEntity>> FindByBusinessIdsAsync(IList<Guid> businessIds)
         {
-            throw new NotImplementedException();
+            return await DbContext.Set<TEntity>().Where(x => businessIds.Contains(x.BusinessId)).ToListAsync();
         }
 
         public TEntity GetByBusinessId(Guid businessId)
