@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using FluentAssertions;
@@ -81,11 +82,9 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 actualEntity.Should().BeEquivalentTo(expectedEntity);
             }
         }
-        private List<EntityWithStringKey> LoadTestEntities(out Guid[] idsToFind)
+        private IList<EntityWithStringKey> Save4Entities()
         {
-            idsToFind = new Guid[2];
-            List<EntityWithStringKey> expectedEntities = new List<EntityWithStringKey>();
-
+            IList<EntityWithStringKey> the4Entities;
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
@@ -93,21 +92,24 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 EntityWithStringKey entity2 = new EntityWithStringKey("Zweite Id");
                 EntityWithStringKey entity3 = new EntityWithStringKey("Dritte Id");
                 EntityWithStringKey entity4 = new EntityWithStringKey("Vierte Id");
-                List<EntityWithStringKey> entities = new List<EntityWithStringKey>() { entity1, entity2, entity3, entity4 };
-                entityDao.Save(entities);
-                idsToFind[0] = entity1.BusinessId;
-                idsToFind[1] = entity4.BusinessId;
-                expectedEntities.Add(entity1);
-                expectedEntities.Add(entity4);
+                the4Entities = new List<EntityWithStringKey>() { entity1, entity2, entity3, entity4 };
+                entityDao.Save(the4Entities);
                 context.SaveChanges();
             }
-            return expectedEntities;
+            return the4Entities;
         }
         [Test]
         public void TestFindByBusinessIds()
         {
-            Guid[] idsToFind;
-            List<EntityWithStringKey> expectedEntities = LoadTestEntities(out idsToFind);
+            IList<EntityWithStringKey> savedEntities = Save4Entities();
+
+            IList<EntityWithStringKey> entitiesToFind = new List<EntityWithStringKey>()
+            {
+                savedEntities[0],
+                savedEntities[3]
+            };
+
+            Guid[] idsToFind = entitiesToFind.Select(x => x.BusinessId).ToArray();
 
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
@@ -118,14 +120,21 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
 
                 Assert.AreEqual(expectedEntityCount, actualEntites.Count);
 
-                actualEntites.Should().BeEquivalentTo(expectedEntities);
+                actualEntites.Should().BeEquivalentTo(entitiesToFind);
             }
         }
         [Test]
         public async Task TestFindByBusinessIdsAsync()
         {
-            Guid[] idsToFind;
-            List<EntityWithStringKey> expectedEntities = LoadTestEntities(out idsToFind);
+            IList<EntityWithStringKey> savedEntities = Save4Entities();
+
+            IList<EntityWithStringKey> entitiesToFind = new List<EntityWithStringKey>()
+            {
+                savedEntities[0],
+                savedEntities[3]
+            };
+
+            Guid[] idsToFind = entitiesToFind.Select(x => x.BusinessId).ToArray();
 
             using (TestDbContext context = new TestDbContext(contextOptions))
             {
@@ -136,7 +145,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
 
                 Assert.AreEqual(expectedEntityCount, actualEntites.Count);
 
-                actualEntites.Should().BeEquivalentTo(expectedEntities);
+                actualEntites.Should().BeEquivalentTo(entitiesToFind);
             }
         }
     }
