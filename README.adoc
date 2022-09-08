@@ -4,7 +4,7 @@
 To be able to query or change data persistently in a database, for example. 
 
 == Class diagramm 
-image:images/Klassendiagramm_commons_persistance.png["Klassendiagramm"]
+image:images/class_diagramm_commons_persistance.png["class diagramm"]
 
 
 == Example
