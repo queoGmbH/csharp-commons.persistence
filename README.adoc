@@ -11,10 +11,11 @@ image:images/Klassendiagramm_commons_persistance.png["Klassendiagramm"]
 We want to use commons.persistance to get the number and a list of all movies contained in a given database. +
 Steps:
 
-* register the Dao
+* register dao with e.g. https://docs.microsoft.com/de-de/dotnet/api/microsoft.extensions.dependencyinjection?view=dotnet-plat-ext-6.0[Microsoft.Extensions.DependencyInjection] + 
+or simple create an instance like:
 [source, C#]
 ....
-builder.Services.AddScoped<IGenericDao<Movie, int>, MovieDao>();
+IGenericDao<Movie, int> _movieDao = new MovieDao<Movie, int>();
 ....
 
 * create a new class to be able to implement the dao
@@ -22,23 +23,15 @@ builder.Services.AddScoped<IGenericDao<Movie, int>, MovieDao>();
 ....
 public class MovieDao : GenericDao<Movie, int>
     {
-        public MovieDao(MvcMovieContext dbContext) : base(dbContext)
+        public MovieDao(MovieContext dbContext) : base(dbContext)
         {
         }
     }
 ....
-* instantiate new Dao in the controller class with an integer as Id
+* now you can use the dao to get all the data
 [source, C#]
 ....
-private readonly IGenericDao<Movie, int> _movieDao;
-....
-* add the dao to the constructor of the controller
-[source, C#]
-....
-public MoviesController(IGenericDao<Movie, int> movieDao)
-{
-    _movieDao = movieDao;
-}
+IEnumerable allMovies = movieDao.GetAll();
 ....
 
 * Determine the number of films with the help of the Daos
@@ -46,8 +39,7 @@ public MoviesController(IGenericDao<Movie, int> movieDao)
 ....
 public long AnzahlDerFilme()
 {
-    _movieDao.GetAll(); // gibt eine Liste von Entitäten zurück
-    return _movieDao.GetCount(); //gibt die anzahl der Entitäten zurück
+    return allMovies.GetCount(); //returns amount of entities
 }
 ....
 
@@ -60,6 +52,5 @@ Install-Package queo.commons.persistance -ProjectName MyProject
 ....
 * register the Dao
 * create a new class to be able to implement the dao
-* instantiate new Dao in the controller class
-* add the dao to the constructor of the controller
+* instantiate new Dao 
 * now you can use the Dao
