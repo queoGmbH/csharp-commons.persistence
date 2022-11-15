@@ -5,7 +5,7 @@ namespace Queo.Commons.Persistence.Generic
     public class Entity<TKey>
     {
         private Guid _businessId;
-        private TKey _id;
+        private TKey _id = default!;
 
         /// <summary>
         ///     Initialisiert eine neue Instanz der <see cref="Entity{TKey}" />-Klasse.
@@ -67,7 +67,7 @@ namespace Queo.Commons.Persistence.Generic
         ///     true, wenn das angegebene Objekt und das aktuelle Objekt gleich sind, andernfalls false.
         /// </returns>
         /// <param name="obj">Das Objekt, das mit dem aktuellen Objekt verglichen werden soll.</param>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (ReferenceEquals(this, obj))
             {
