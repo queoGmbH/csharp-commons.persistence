@@ -8,8 +8,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.TestClasses
         {
         }
 
-        public DbSet<Foo> Foos { get; set; }
+        public DbSet<Foo> Foos => Set<Foo>();
 
-        public DbSet<EntityWithStringKey> EntityWithStringKeys { get; set; }
+        public DbSet<EntityWithStringKey> EntityWithStringKeys => Set<EntityWithStringKey>();
     }
 }

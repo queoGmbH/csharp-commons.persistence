@@ -1,16 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage;
+using Queo.Commons.Persistence.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage;
-
-using Queo.Commons.Persistence.Generic;
 
 namespace Queo.Commons.Persistence.EntityFramework.Generic
 {
@@ -36,7 +34,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </summary>
         protected virtual IEnumerable<Expression<Func<TEntity, object>>> PropertiesToInclude
         {
-            get { return new Expression<Func<TEntity, object>>[0]; }
+            get { return Array.Empty<Expression<Func<TEntity, object>>>(); }
         }
 
         /// <summary>  
@@ -70,7 +68,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </returns>
         public virtual bool Exists(TKey primaryKey)
         {
-            TEntity entity = _dbContext.Find<TEntity>(primaryKey);
+            TEntity? entity = _dbContext.Find<TEntity>(primaryKey);
             if (entity == null)
             {
                 return false;
@@ -88,7 +86,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </returns>
         public virtual async Task<bool> ExistsAsync(TKey primaryKey)
         {
-            TEntity entity = await _dbContext.FindAsync<TEntity>(primaryKey);
+            TEntity? entity = await _dbContext.FindAsync<TEntity>(primaryKey);
             if (entity == null)
             {
                 return false;
@@ -130,13 +128,12 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// <returns></returns>
         public virtual IList<TEntity> FindByIds(TKey[] ids)
         {
-            List<TEntity> entities = new List<TEntity>();
+            List<TEntity> entities = new();
             foreach (TKey id in ids)
             {
-                TEntity entity = Get(id);
-                if (entity != null)
+                if (Exists(id))
                 {
-                    entities.Add(entity);
+                    entities.Add(Get(id));
                 }
             }
 
@@ -152,12 +149,12 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// <returns></returns>
         public virtual async Task<IList<TEntity>> FindByIdsAsync(TKey[] ids)
         {
-            List<TEntity> entities = new List<TEntity>();
+            List<TEntity> entities = new();
             foreach (TKey id in ids)
             {
-                TEntity entity = await GetAsync(id);
-                if (entity != null)
+                if (Exists(id))
                 {
+                    TEntity entity = await GetAsync(id);
                     entities.Add(entity);
                 }
             }
@@ -200,10 +197,10 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         {
             IReadOnlyList<IProperty> keyProperties = GetKeyProperties(typeof(TEntity));
             ParameterExpression entityParameter = Expression.Parameter(typeof(TEntity), "e");
-            Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey }), entityParameter);
+            Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey! }), entityParameter);
 
             Expression<Func<TEntity, bool>> keyExpression = Expression.Lambda<Func<TEntity, bool>>(expressionBody, entityParameter);
-            TEntity entity = DbSetWithIncludedProperties().FirstOrDefault(keyExpression);
+            TEntity entity = DbSetWithIncludedProperties().First(keyExpression);
             return entity;
         }
 
@@ -216,10 +213,10 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         {
             IReadOnlyList<IProperty> keyProperties = GetKeyProperties(typeof(TEntity));
             ParameterExpression entityParameter = Expression.Parameter(typeof(TEntity), "e");
-            Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey }), entityParameter);
+            Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey! }), entityParameter);
 
             Expression<Func<TEntity, bool>> keyExpression = Expression.Lambda<Func<TEntity, bool>>(expressionBody, entityParameter);
-            TEntity entity = await DbSetWithIncludedProperties().FirstOrDefaultAsync(keyExpression);
+            TEntity entity = await DbSetWithIncludedProperties().FirstAsync(keyExpression);
             return entity;
         }
 
@@ -336,14 +333,14 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
 
             BinaryExpression GenerateEqualExpression(IProperty property, int i)
             {
-                MethodInfo propMethod = typeof(EF).GetTypeInfo().GetDeclaredMethod(nameof(EF.Property)).MakeGenericMethod(property.ClrType);
+                MethodInfo propMethod = typeof(EF).GetTypeInfo().GetDeclaredMethod(nameof(EF.Property))!.MakeGenericMethod(property.ClrType);
                 MethodCallExpression leftExpression = Expression.Call(
                     propMethod,
                     entityParameter,
                     Expression.Constant(property.Name, typeof(string)));
                 // MethodInfo um den Primärschlüsselwert aus dem Array abzurufen
                 MethodInfo getKeyValueMethod =
-                    typeof(ValueBuffer).GetRuntimeProperties().Single(p => p.GetIndexParameters().Length > 0).GetMethod;
+                    typeof(ValueBuffer).GetRuntimeProperties().Single(p => p.GetIndexParameters().Length > 0).GetMethod!;
                 UnaryExpression rightExpression = Expression.Convert(
                     Expression.Call(
                         keyValuesConstant,
@@ -358,8 +355,19 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
 
         private IReadOnlyList<IProperty> GetKeyProperties(Type entityType)
         {
-            IEntityType entityModel = _dbContext.Model.FindEntityType(entityType);
-            IReadOnlyList<IProperty> keyProperties = entityModel.FindPrimaryKey().Properties;
+            IEntityType? entityModel = _dbContext.Model.FindEntityType(entityType);
+            if (entityModel == null)
+            {
+                throw new InvalidOperationException($"EntityType {entityType.Name} could not be found on the given db context.");
+            }
+
+            IKey? primaryKey = entityModel.FindPrimaryKey();
+
+            if (primaryKey == null)
+            {
+                throw new InvalidOperationException($"No Primary key could be found for EntityType {entityType.Name} on the given db context.");
+            }
+            IReadOnlyList<IProperty> keyProperties = primaryKey.Properties;
             return keyProperties;
         }
     }

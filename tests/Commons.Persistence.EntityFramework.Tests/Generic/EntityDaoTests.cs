@@ -1,24 +1,20 @@
+using FluentAssertions;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
+using Queo.Commons.Persistence.EntityFramework.Generic;
+using Queo.Commons.Persistence.EntityFramework.Tests.TestClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using FluentAssertions;
-
-using Microsoft.EntityFrameworkCore;
-
-using NUnit.Framework;
-
-using Queo.Commons.Persistence.EntityFramework.Generic;
-using Queo.Commons.Persistence.EntityFramework.Tests.TestClasses;
 
 namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
 {
     [TestFixture]
     public class EntityDaoTests : PersistenceBaseTest
     {
-        private DbContextOptions<TestDbContext> contextOptions;
-        private EntityWithStringKey expectedEntity;
+        private DbContextOptions<TestDbContext> contextOptions = null!;
+        private EntityWithStringKey expectedEntity = null!;
 
         //GIVEN: <comment of assumptions>
         [SetUp]
