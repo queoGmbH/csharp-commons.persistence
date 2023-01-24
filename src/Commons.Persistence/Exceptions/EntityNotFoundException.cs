@@ -1,22 +1,34 @@
 ﻿using Queo.Commons.Persistence.Resources;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Queo.Commons.Persistence.Exceptions
 {
+    /// <summary>
+    /// Thrown to indicate that an entity was not found.
+    /// </summary>
+    [Serializable]
     public class EntityNotFoundException : Exception
     {
+        /// <summary>
+        /// Type of the entity that was not found or <code>null</code>
+        /// </summary>
         public Type? EntityType { get; }
+
+        /// <summary>
+        /// ID of the entity that was not found or "unknown".
+        /// </summary>
         public string Id { get; } = "unknown";
 
         public EntityNotFoundException() : base(ExceptionMessages.msg_EntityNotFoundException)
         {
         }
 
+        /// <summary>
+        /// Creates a new instance.
+        /// </summary>
+        /// <param name="entityType">Type of the entity that was not found.</param>
+        /// <param name="id">ID of the entity that was not found.</param>
         public EntityNotFoundException(Type entityType, string id) : base(ExceptionMessages.msg_EntityNotFoundException)
         {
             EntityType = entityType;
