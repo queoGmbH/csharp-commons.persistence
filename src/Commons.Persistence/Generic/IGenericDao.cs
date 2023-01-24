@@ -62,6 +62,7 @@ namespace Queo.Commons.Persistence.Generic
         /// </summary>
         /// <param name="primaryKey"></param>
         /// <returns></returns>
+        /// <exception cref="EntityNotFoundException">if an entity with the primaryKey was not found</exception>
         T Get(TKey primaryKey);
 
         /// <summary>
@@ -69,6 +70,7 @@ namespace Queo.Commons.Persistence.Generic
         /// </summary>
         /// <param name="primaryKey"></param>
         /// <returns></returns>
+        /// <exception cref="EntityNotFoundException">if an entity with the primaryKey was not found</exception>
         Task<T> GetAsync(TKey primaryKey);
 
         /// <summary>

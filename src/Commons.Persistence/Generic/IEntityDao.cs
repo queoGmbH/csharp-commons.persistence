@@ -31,6 +31,7 @@ namespace Queo.Commons.Persistence.Generic
         /// </summary>
         /// <param name="businessId">the BusinessId</param>
         /// <returns>The entity</returns>
+        /// <exception cref="EntityNotFoundException">if an entity with businessId was not found</exception>
         T GetByBusinessId(Guid businessId);
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace Queo.Commons.Persistence.Generic
         /// </summary>
         /// <param name="businessId">the BusinessId</param>
         /// <returns>The entity</returns>
+        /// <exception cref="EntityNotFoundException">if an entity with businessId was not found</exception>
         Task<T> GetByBusinessIdAsync(Guid businessId);
     }
 }

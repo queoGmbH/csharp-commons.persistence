@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
+using Queo.Commons.Persistence.Exceptions;
 using Queo.Commons.Persistence.Generic;
 using System;
 using System.Collections.Generic;
@@ -200,8 +201,15 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
             Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey! }), entityParameter);
 
             Expression<Func<TEntity, bool>> keyExpression = Expression.Lambda<Func<TEntity, bool>>(expressionBody, entityParameter);
-            TEntity entity = DbSetWithIncludedProperties().First(keyExpression);
-            return entity;
+            try
+            {
+                TEntity entity = DbSetWithIncludedProperties().First(keyExpression);
+                return entity;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new EntityNotFoundException(typeof(TEntity), primaryKey.ToString());
+            }
         }
 
         /// <summary>
@@ -216,8 +224,15 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
             Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey! }), entityParameter);
 
             Expression<Func<TEntity, bool>> keyExpression = Expression.Lambda<Func<TEntity, bool>>(expressionBody, entityParameter);
-            TEntity entity = await DbSetWithIncludedProperties().FirstAsync(keyExpression);
-            return entity;
+            try
+            {
+                TEntity entity = await DbSetWithIncludedProperties().FirstAsync(keyExpression);
+                return entity;
+            }
+            catch (InvalidOperationException)
+            {
+                throw new EntityNotFoundException(typeof(TEntity), primaryKey?.ToString());
+            }
         }
 
         /// <summary>
