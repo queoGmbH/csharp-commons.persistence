@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage;
+using Queo.Commons.Checks;
 using Queo.Commons.Persistence.Exceptions;
 using Queo.Commons.Persistence.Generic;
 using System;
@@ -196,6 +197,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// <returns></returns>
         public virtual TEntity Get(TKey primaryKey)
         {
+            Require.NotNull(primaryKey, nameof(primaryKey));
             IReadOnlyList<IProperty> keyProperties = GetKeyProperties(typeof(TEntity));
             ParameterExpression entityParameter = Expression.Parameter(typeof(TEntity), "e");
             Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey! }), entityParameter);
@@ -208,7 +210,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
             }
             catch (InvalidOperationException)
             {
-                throw new EntityNotFoundException(typeof(TEntity), primaryKey.ToString());
+                throw new EntityNotFoundException(typeof(TEntity), primaryKey!.ToString()!);
             }
         }
 
@@ -219,6 +221,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// <returns></returns>
         public virtual async Task<TEntity> GetAsync(TKey primaryKey)
         {
+            Require.NotNull(primaryKey, nameof(primaryKey));
             IReadOnlyList<IProperty> keyProperties = GetKeyProperties(typeof(TEntity));
             ParameterExpression entityParameter = Expression.Parameter(typeof(TEntity), "e");
             Expression expressionBody = BuildPredicate(keyProperties, new ValueBuffer(new object[] { primaryKey! }), entityParameter);
@@ -231,7 +234,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
             }
             catch (InvalidOperationException)
             {
-                throw new EntityNotFoundException(typeof(TEntity), primaryKey?.ToString());
+                throw new EntityNotFoundException(typeof(TEntity), primaryKey!.ToString()!);
             }
         }
 
