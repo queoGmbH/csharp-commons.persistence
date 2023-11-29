@@ -33,7 +33,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
 
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
 
-                entityDao.Save(expectedEntity);
+                entityDao.Add(expectedEntity);
                 entityDao.Flush();
             }
         }
@@ -117,7 +117,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 EntityWithStringKey entity3 = new EntityWithStringKey("Dritte Id");
                 EntityWithStringKey entity4 = new EntityWithStringKey("Vierte Id");
                 the4Entities = new List<EntityWithStringKey>() { entity1, entity2, entity3, entity4 };
-                entityDao.Save(the4Entities);
+                entityDao.Add(the4Entities);
                 context.SaveChanges();
             }
             return the4Entities;

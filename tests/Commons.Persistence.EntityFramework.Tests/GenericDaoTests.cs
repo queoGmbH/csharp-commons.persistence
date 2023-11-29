@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,7 +31,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo foo3 = new Foo { Email = "test3@test.com" };
                 Foo foo4 = new Foo { Email = "test4@test.com" };
                 List<Foo> foos = new List<Foo> { foo1, foo2, foo3, foo4 };
-                genericDao.Save(foos);
+                genericDao.Add(foos);
                 fooIdsToFind[0] = foo1.Id;
                 fooIdsToFind[1] = foo4.Id;
                 expectedFoos.Add(foo1);
@@ -67,7 +68,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo foo3 = new Foo { Email = "test3@test.com" };
                 Foo foo4 = new Foo { Email = "test4@test.com" };
                 List<Foo> foos = new List<Foo> { foo1, foo2, foo3, foo4 };
-                await genericDao.SaveAsync(foos);
+                await genericDao.AddAsync(foos);
                 fooIdsToFind[0] = foo1.Id;
                 fooIdsToFind[1] = foo4.Id;
                 expectedFoos.Add(foo1);
@@ -113,7 +114,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                     foos.Add(foo);
                 }
 
-                addedFoos = genericDao.Save(foos);
+                addedFoos = genericDao.Add(foos);
                 context.SaveChanges();
             }
 
@@ -153,7 +154,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                     foos.Add(foo);
                 }
 
-                addedFoos = await genericDao.SaveAsync(foos);
+                addedFoos = await genericDao.AddAsync(foos);
                 await context.SaveChangesAsync();
             }
 
@@ -184,7 +185,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo foo2 = new Foo { Email = "test2@test.com" };
                 Foo foo3 = new Foo { Email = "test3@test.com" };
                 List<Foo> foos = new List<Foo> { foo1, foo2, foo3 };
-                expectedFoos = genericDao.Save(foos);
+                expectedFoos = genericDao.Add(foos);
                 context.SaveChanges();
             }
 
@@ -213,7 +214,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo foo2 = new Foo { Email = "test2@test.com" };
                 Foo foo3 = new Foo { Email = "test3@test.com" };
                 List<Foo> foos = new List<Foo> { foo1, foo2, foo3 };
-                expectedFoos = await genericDao.SaveAsync(foos);
+                expectedFoos = await genericDao.AddAsync(foos);
                 await context.SaveChangesAsync();
             }
 
@@ -241,7 +242,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo foo3 = new Foo { Email = "test3@test.com" };
                 Foo foo4 = new Foo { Email = "test4@test.com" };
                 List<Foo> foos = new List<Foo> { foo1, foo2, foo3, foo4 };
-                genericDao.Save(foos);
+                genericDao.Add(foos);
                 context.SaveChanges();
             }
 
@@ -271,7 +272,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo foo3 = new Foo { Email = "test3@test.com" };
                 Foo foo4 = new Foo { Email = "test4@test.com" };
                 List<Foo> foos = new List<Foo> { foo1, foo2, foo3, foo4 };
-                await genericDao.SaveAsync(foos);
+                await genericDao.AddAsync(foos);
                 await context.SaveChangesAsync();
             }
 
@@ -299,7 +300,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
             using (TestDbContext context = new TestDbContext(dbContextOptions))
             {
                 FooDao fooDao = new FooDao(context);
-                fooDao.Save(expectedFoo);
+                fooDao.Add(expectedFoo);
                 context.SaveChanges();
                 fooId = expectedFoo.Id;
             }
@@ -328,7 +329,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
             using (TestDbContext context = new TestDbContext(dbContextOptions))
             {
                 FooDao fooDao = new FooDao(context);
-                await fooDao.SaveAsync(expectedFoo);
+                await fooDao.AddAsync(expectedFoo);
                 await context.SaveChangesAsync();
                 fooId = expectedFoo.Id;
             }
@@ -356,7 +357,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
             {
                 GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
                 Foo foo = new Foo { Email = "test@test.com" };
-                expectedFoo = genericDao.Save(foo);
+                expectedFoo = genericDao.Add(foo);
                 context.SaveChanges();
             }
 
@@ -382,7 +383,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
             {
                 GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
                 Foo foo = new Foo { Email = "test@test.com" };
-                expectedFoo = await genericDao.SaveAsync(foo);
+                expectedFoo = await genericDao.AddAsync(foo);
                 await context.SaveChangesAsync();
             }
 
