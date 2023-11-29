@@ -57,13 +57,11 @@ namespace Queo.Commons.Persistence.EntityFramework
         {
             if (context.Items.ContainsKey(QueoRollbackTransaction))
             {
-                return (bool)context.Items[QueoRollbackTransaction];
+                // Wenn es den Eintrag gibt, dieser aber null ist, ist etwas schief gegangen. Dann nichts speichern.
+                return (bool)(context.Items[QueoRollbackTransaction] ?? true);
             }
-            else
-            {
-                // Wenn es den Eintrag nicht gibt, ist irgendetwas schief gegangen. Dann nichts speichern.
-                return true;
-            }
+            // Wenn es den Eintrag nicht gibt, ist irgendetwas schief gegangen. Dann nichts speichern.
+            return true;
         }
     }
 
