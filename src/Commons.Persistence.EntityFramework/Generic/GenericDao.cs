@@ -85,7 +85,6 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
             // Throw an exception if the entity type or primary key is not found
             throw new InvalidOperationException("Entity type or primary key not found.");
         }
-        
 
         /// <summary>
         ///     Checks asynchronously whether there is an entity with the primary key.
