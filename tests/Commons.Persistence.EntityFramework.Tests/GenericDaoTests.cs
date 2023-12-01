@@ -348,7 +348,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
         }
 
         [Test]
-        public void TestSaveAndLoad()
+        public void TestAddAndLoad()
         {
             //GIVEN: <comment of assumptions>
             DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
@@ -374,7 +374,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
         }
 
         [Test]
-        public async Task TestSaveAndLoadAsync()
+        public async Task TestAddAndLoadAsync()
         {
             //GIVEN: <comment of assumptions>
             DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
