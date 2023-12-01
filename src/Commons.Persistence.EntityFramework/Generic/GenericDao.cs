@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace Queo.Commons.Persistence.EntityFramework.Generic
@@ -70,14 +71,21 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </returns>
         public virtual bool Exists(TKey primaryKey)
         {
-            TEntity? entity = _dbContext.Find<TEntity>(primaryKey);
-            if (entity == null)
+            IEntityType? entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
+            if (entityType != null)
             {
-                return false;
+                IKey? entityPrimaryKey = entityType.FindPrimaryKey();
+                if (entityPrimaryKey != null)
+                {
+                    string primaryKeyName = entityPrimaryKey.Properties[0].Name;
+                    // TODO: Check possiblity for having troubles with null
+                    return _dbContext.Set<TEntity>().Any(entity => EF.Property<TKey>(entity, primaryKeyName)!.Equals(primaryKey));
+                }
             }
-
-            return true;
+            // Throw an exception if the entity type or primary key is not found
+            throw new InvalidOperationException("Entity type or primary key not found.");
         }
+        
 
         /// <summary>
         ///     Checks asynchronously whether there is an entity with the primary key.
