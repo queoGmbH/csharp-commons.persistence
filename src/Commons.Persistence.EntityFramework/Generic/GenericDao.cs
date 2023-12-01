@@ -239,7 +239,17 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         ///     Returns a list with all entities.
         /// </summary>
         /// <returns>List with all entities.</returns>
+        [Obsolete("GetAll() is deprecated, please use FindAll() instead.")]
         public virtual IList<TEntity> GetAll()
+        {
+            return FindAll();
+        }
+
+        /// <summary>
+        ///     Returns a list with all entities.
+        /// </summary>
+        /// <returns>List with all entities.</returns>
+        public virtual IList<TEntity> FindAll()
         {
             List<TEntity> entities = _dbContext.Set<TEntity>().ToList();
             return entities;
@@ -249,7 +259,17 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         ///     Returns a list with all entities asynchronously.
         /// </summary>
         /// <returns>List with all entities.</returns>
+        [Obsolete("GetAllAsync() is deprecated, please use FindAllAsync() instead.")]
         public virtual async Task<IList<TEntity>> GetAllAsync()
+        {
+            return await FindAllAsync();
+        }
+
+        /// <summary>
+        ///     Returns a list with all entities asynchronously.
+        /// </summary>
+        /// <returns>List with all entities.</returns>
+        public virtual async Task<IList<TEntity>> FindAllAsync()
         {
             List<TEntity> entities = await _dbContext.Set<TEntity>().ToListAsync();
             return entities;
