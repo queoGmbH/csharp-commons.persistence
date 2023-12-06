@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -100,30 +101,62 @@ namespace Queo.Commons.Persistence.Generic
         /// <summary>
         ///     Saves the passed entity.
         /// </summary>
-        /// <param name="entity">The entity to be saved</param>
+        /// <param name="entity">The entity to be saved.</param>
         /// <returns>The stored entity</returns>
+        [Obsolete("Save(T entity) is deprecated, please use Add(T entity) instead.")]
         T Save(T entity);
+
+        /// <summary>
+        ///     Adds the passed entity.
+        /// </summary>
+        /// <param name="entity">The entity to be added.</param>
+        /// <returns>The stored entity</returns>
+        T Add(T entity);
 
         /// <summary>
         ///     Saves the passed entity asynchronously.
         /// </summary>
-        /// <param name="entity">The entity to be saved</param>
+        /// <param name="entity">The entity to be saved.</param>
         /// <returns>The stored entity</returns>
+        [Obsolete("SaveAsync(T entity) is deprecated, please use AddAsync(T entity) instead.")]
         Task<T> SaveAsync(T entity);
+
+        /// <summary>
+        ///     Adds the passed entity asynchronously.
+        /// </summary>
+        /// <param name="entity">The entity to be added.</param>
+        /// <returns>The stored entity</returns>
+        Task<T> AddAsync(T entity);
 
         /// <summary>
         ///     Saves all entities contained in the passed list.
         /// </summary>
         /// <param name="entities">List of entities to be saved.</param>
         /// <returns>List with stored entities</returns>
+        [Obsolete("Save(IList<T> entities) is deprecated, please use Add(IList<T> entities) instead.")]
         IList<T> Save(IList<T> entities);
+
+        /// <summary>
+        ///     Adds all entities contained in the passed list.
+        /// </summary>
+        /// <param name="entities">List of entities to be added.</param>
+        /// <returns>List with stored entities</returns>
+        IList<T> Add(IList<T> entities);
 
         /// <summary>
         ///     Saves asynchronously all entities that are contained in the passed list.
         /// </summary>
-        /// <param name="entities">Liste mit zu speichernden Entities.</param>
-        /// <returns>Liste mit gespeicherten Entities</returns>
+        /// <param name="entities">List of entities to be saved.</param>
+        /// <returns>>List with stored entities</returns>
+        [Obsolete("SaveAsync(IList<T> entities) is deprecated, please use AddAsync(IList<T> entities) instead.")]
         Task<IList<T>> SaveAsync(IList<T> entities);
+
+        /// <summary>
+        ///     Adds asynchronously all entities that are contained in the passed list.
+        /// </summary>
+        /// <param name="entities">List of entities to be added.</param>
+        /// <returns>>List with stored entities</returns>
+        Task<IList<T>> AddAsync(IList<T> entities);
 
         /// <summary>
         ///     Searches for <see cref="T" /> using a list of Ids.

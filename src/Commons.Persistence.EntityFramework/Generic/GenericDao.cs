@@ -280,7 +280,18 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </summary>
         /// <param name="entity">The entity to be saved</param>
         /// <returns>The stored entity</returns>
+        [Obsolete("Save(TEntity entity) is deprecated, please use Add(TEntity entity) instead.")]
         public virtual TEntity Save(TEntity entity)
+        {
+            return Add(entity);
+        }
+
+        /// <summary>
+        ///     Adds the passed entity.
+        /// </summary>
+        /// <param name="entity">The entity to be saved</param>
+        /// <returns>The stored entity</returns>
+        public virtual TEntity Add(TEntity entity)
         {
             EntityEntry<TEntity> entityEntry = _dbContext.Add(entity);
             return entityEntry.Entity;
@@ -291,7 +302,18 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </summary>
         /// <param name="entity">The entity to be saved</param>
         /// <returns>The stored entity</returns>
+        [Obsolete("SaveAsync(TEntity entity) is deprecated, please use AddAsync(TEntity entity) instead.")]
         public virtual async Task<TEntity> SaveAsync(TEntity entity)
+        {
+            return await AddAsync(entity);
+        }
+
+        /// <summary>
+        ///     Adds the passed entity asynchronously.
+        /// </summary>
+        /// <param name="entity">The entity to be added</param>
+        /// <returns>The stored entity</returns>
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
             EntityEntry<TEntity> entityEntry = await _dbContext.AddAsync(entity);
             return entityEntry.Entity;
@@ -302,7 +324,18 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </summary>
         /// <param name="entities">List of entities to be saved.</param>
         /// <returns>List with stored entities</returns>
+        [Obsolete("Save(IList<TEntity> entities) is deprecated, please use Add(IList<TEntity> entities) instead.")]
         public virtual IList<TEntity> Save(IList<TEntity> entities)
+        {
+            return Add(entities);
+        }
+
+        /// <summary>
+        ///     Adds all entities contained in the passed list.
+        /// </summary>
+        /// <param name="entities">List of entities to be saved.</param>
+        /// <returns>List with stored entities</returns>
+        public virtual IList<TEntity> Add(IList<TEntity> entities)
         {
             _dbContext.AddRange(entities);
             return entities;
@@ -311,9 +344,21 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// <summary>
         ///     Saves asynchronously all entities that are contained in the passed list.
         /// </summary>
-        /// <param name="entities">Liste mit zu speichernden Entities.</param>
-        /// <returns>Liste mit gespeicherten Entities</returns>
+        /// <param name="entities">List of entities to be saved.</param>
+        /// <returns>>List with stored entities</returns>
+        [Obsolete("SaveAsync(IList<TEntity> entities) is deprecated, please use AddAsync(IList<TEntity> entities) instead.")]
+
         public virtual async Task<IList<TEntity>> SaveAsync(IList<TEntity> entities)
+        {
+            return await AddAsync(entities);
+        }
+
+        /// <summary>
+        ///     Adds asynchronously all entities that are contained in the passed list.
+        /// </summary>
+        /// <param name="entities">List of entities to be added.</param>
+        /// <returns>>List with stored entities</returns>
+        public virtual async Task<IList<TEntity>> AddAsync(IList<TEntity> entities)
         {
             await _dbContext.AddRangeAsync(entities);
             return entities;
