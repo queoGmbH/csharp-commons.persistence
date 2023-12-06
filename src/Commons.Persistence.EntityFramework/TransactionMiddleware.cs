@@ -49,7 +49,6 @@ namespace Queo.Commons.Persistence.EntityFramework
                 }
                 catch (Exception)
                 {
-                    //TODO: Log Eintrag schreiben!
                     transaction.Rollback();
                     throw;
                 }
