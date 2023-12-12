@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Queo.Commons.Checks;
 
 namespace Queo.Commons.Persistence.EntityFramework
 {
@@ -55,15 +57,12 @@ namespace Queo.Commons.Persistence.EntityFramework
 
         private bool ShouldRollbackTransaction(HttpContext context)
         {
-            if (context.Items.ContainsKey(QueoRollbackTransaction))
+            if (!context.Items.ContainsKey(QueoRollbackTransaction))
             {
-                return (bool)context.Items[QueoRollbackTransaction];
+                throw new KeyNotFoundException($"Key: {QueoRollbackTransaction} not found!");
             }
-            else
-            {
-                // Wenn es den Eintrag nicht gibt, ist irgendetwas schief gegangen. Dann nichts speichern.
-                return true;
-            }
+            Require.NotNull(context.Items[QueoRollbackTransaction]);
+            return (bool)context.Items[QueoRollbackTransaction]!;
         }
     }
 
