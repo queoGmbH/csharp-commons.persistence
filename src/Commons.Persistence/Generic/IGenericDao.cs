@@ -78,13 +78,27 @@ namespace Queo.Commons.Persistence.Generic
         ///     Returns a list with all entities.
         /// </summary>
         /// <returns>List with all entities.</returns>
+        [Obsolete("GetAll() is deprecated, please use FindAll() instead.")]
         IList<T> GetAll();
+
+        /// <summary>
+        ///     Returns a list with all entities.
+        /// </summary>
+        /// <returns>List with all entities.</returns>
+        IList<T> FindAll();
 
         /// <summary>
         ///     Returns a list with all entities asynchronously.
         /// </summary>
         /// <returns>List with all entities.</returns>
+        [Obsolete("GetAllAsync() is deprecated, please use FindAllAsync() instead.")]
         Task<IList<T>> GetAllAsync();
+
+        /// <summary>
+        ///     Returns a list with all entities asynchronously.
+        /// </summary>
+        /// <returns>List with all entities.</returns>
+        Task<IList<T>> FindAllAsync();
 
         /// <summary>
         ///     Returns the number of all objects.

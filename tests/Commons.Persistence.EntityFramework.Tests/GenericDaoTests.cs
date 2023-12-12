@@ -173,7 +173,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
         }
 
         [Test]
-        public void TestGetAll()
+        public void TestFindAll()
         {
             //GIVEN: <comment of assumptions>
             DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
@@ -194,7 +194,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
 
                 //WHEN: <comment on execution>
-                IList<Foo> actualFoos = genericDao.GetAll();
+                IList<Foo> actualFoos = genericDao.FindAll();
 
                 //THEN: <comments on expectations>
                 CollectionAssert.AreEquivalent(expectedFoos, actualFoos);
@@ -202,7 +202,31 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
         }
 
         [Test]
-        public async Task TestGetAllAsync()
+        public void TestFindAllWithNoEntitiesExisting()
+        {
+            //GIVEN: <comment of assumptions>
+            DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+                context.SaveChanges();
+            }
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+
+                //WHEN: <comment on execution>
+                IList<Foo> actualFoos = genericDao.FindAll();
+
+                //THEN: <comments on expectations>
+                actualFoos.Count.Should().Be(0);
+            }
+        }
+
+        [Test]
+        public async Task TestFindAllAsync()
         {
             //GIVEN: <comment of assumptions>
             DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
@@ -223,12 +247,36 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
 
                 //WHEN: <comment on execution>
-                IList<Foo> actualFoos = await genericDao.GetAllAsync();
+                IList<Foo> actualFoos = await genericDao.FindAllAsync();
 
                 //THEN: <comments on expectations>
                 CollectionAssert.AreEquivalent(expectedFoos, actualFoos);
             }
         }
+
+        [Test]
+        public async Task TestFindAllAsyncNoEntitiesExisting()
+        {
+            //GIVEN: <comment of assumptions>
+            DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+                await context.SaveChangesAsync();
+            }
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+
+                //WHEN: <comment on execution>
+                IList<Foo> actualFoos = await genericDao.FindAllAsync();
+
+                //THEN: <comments on expectations>
+                actualFoos.Count.Should().Be(0);
+            }
+        }
+
         [Test]
         public void TestGetCount()
         {
