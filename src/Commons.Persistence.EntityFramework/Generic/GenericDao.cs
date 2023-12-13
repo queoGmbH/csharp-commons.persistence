@@ -95,13 +95,19 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </returns>
         public virtual async Task<bool> ExistsAsync(TKey primaryKey)
         {
-            TEntity? entity = await _dbContext.FindAsync<TEntity>(primaryKey);
-            if (entity == null)
+            IEntityType? entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
+            if (entityType != null)
             {
-                return false;
+                IKey? entityPrimaryKey = entityType.FindPrimaryKey();
+                if (entityPrimaryKey != null)
+                {
+                    string primaryKeyName = entityPrimaryKey.Properties[0].Name;
+                    // TODO: Check possiblity for having troubles with null
+                    return await _dbContext.Set<TEntity>().AnyAsync(entity => EF.Property<TKey>(entity, primaryKeyName)!.Equals(primaryKey));
+                }
             }
-
-            return true;
+            // Throw an exception if the entity type or primary key is not found
+            throw new InvalidOperationException("Entity type or primary key not found.");
         }
 
         /// <summary>
