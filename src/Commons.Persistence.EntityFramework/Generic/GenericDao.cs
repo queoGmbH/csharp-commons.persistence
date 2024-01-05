@@ -74,12 +74,11 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </returns>
         public virtual bool Exists(TKey primaryKey)
         {
-            // Get type of entity, throw exception, if type is null
-            IEntityType? entityType = _dbContext.Model.FindEntityType(typeof(TEntity)) ?? throw new InvalidOperationException(ExceptionMessages.msg_EntityTypeNotFoundException);
-            // Get primary key of entity, throw exception, if primary key is null
-            IKey? entityPrimaryKey = entityType.FindPrimaryKey() ?? throw new InvalidOperationException(string.Format(ExceptionMessages.msg_PrimaryKeyForEntityTypeNotFoundException, entityType));
-            string primaryKeyName = entityPrimaryKey.Properties[0].Name;
-            return _dbContext.Set<TEntity>().Any(entity => EF.Property<TKey>(entity, primaryKeyName)!.Equals(primaryKey));
+            // Get the primaryKey of the entity
+            string entityPrimaryKeyName = GetEntityPrimaryKeyName();
+
+            // Check if there is any Entity with the provided primaryKey
+            return _dbContext.Set<TEntity>().Any(entity => EF.Property<TKey>(entity, entityPrimaryKeyName)!.Equals(primaryKey));
         }
 
         /// <summary>
@@ -91,12 +90,24 @@ namespace Queo.Commons.Persistence.EntityFramework.Generic
         /// </returns>
         public virtual async Task<bool> ExistsAsync(TKey primaryKey)
         {
+            // Get the primaryKey of the entity
+            string entityPrimaryKeyName = GetEntityPrimaryKeyName();
+
+            // Check if there is any entity with the provided primaryKey
+            return await _dbContext.Set<TEntity>().AnyAsync(entity => EF.Property<TKey>(entity, entityPrimaryKeyName)!.Equals(primaryKey));
+        }
+
+        private string GetEntityPrimaryKeyName()
+        {
             // Get type of entity, throw exception, if type is null
-            IEntityType? entityType = _dbContext.Model.FindEntityType(typeof(TEntity)) ?? throw new InvalidOperationException(ExceptionMessages.msg_EntityTypeNotFoundException);
+            IEntityType? entityType = _dbContext.Model.FindEntityType(typeof(TEntity));
+            if (entityType == null) throw new InvalidOperationException(ExceptionMessages.msg_EntityTypeNotFoundException);
+
             // Get primary key of entity, throw exception, if primary key is null
-            IKey? entityPrimaryKey = entityType.FindPrimaryKey() ?? throw new InvalidOperationException(string.Format(ExceptionMessages.msg_PrimaryKeyForEntityTypeNotFoundException, entityType));
-            string primaryKeyName = entityPrimaryKey.Properties[0].Name;
-            return await _dbContext.Set<TEntity>().AnyAsync(entity => EF.Property<TKey>(entity, primaryKeyName)!.Equals(primaryKey));
+            IKey? entityPrimaryKey = entityType.FindPrimaryKey();
+            if (entityPrimaryKey == null) throw new InvalidOperationException(string.Format(ExceptionMessages.msg_PrimaryKeyForEntityTypeNotFoundException, entityType));
+
+            return entityPrimaryKey.Properties[0].Name;
         }
 
         /// <summary>
