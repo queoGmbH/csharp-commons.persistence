@@ -54,6 +54,62 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
         }
 
         [Test]
+        public void TestExistsWithExistingEntry()
+        {
+            //GIVEN: <comment of assumptions>
+            DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
+            int fooIdToCheck = 2;
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+                Foo foo1 = new Foo { Email = "test@test.com" };
+                Foo foo2 = new Foo { Email = "test2@test.com" };
+                List<Foo> foos = new List<Foo> { foo1, foo2 };
+                genericDao.Add(foos);
+                context.SaveChanges();
+            }
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+
+                //WHEN: <comment on execution>
+                bool fooExists = genericDao.Exists(fooIdToCheck);
+
+                //THEN: <comments on expectations>
+                fooExists.Should().BeTrue();
+            }
+        }
+
+        [Test]
+        public void TestExistsWithNotExistingEntry()
+        {
+            //GIVEN: <comment of assumptions>
+            DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
+            int fooIdToCheck = 5;
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+                Foo foo1 = new Foo { Email = "test@test.com" };
+                Foo foo2 = new Foo { Email = "test2@test.com" };
+                List<Foo> foos = new List<Foo> { foo1, foo2 };
+                genericDao.Add(foos);
+                context.SaveChanges();
+            }
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+
+                //WHEN: <comment on execution>
+                bool fooExists = genericDao.Exists(fooIdToCheck);
+
+                //THEN: <comments on expectations>
+                fooExists.Should().BeFalse();
+            }
+        }
+
+        [Test]
         public async Task TestFindByIdsAsync()
         {
             //GIVEN: <comment of assumptions>
@@ -90,8 +146,64 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
             }
         }
 
+        [Test]
+        public async Task TestExistsAsyncWithExistingEntry()
+        {
+            //GIVEN: <comment of assumptions>
+            DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
+            int fooIdToCheck = 2;
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+                Foo foo1 = new Foo { Email = "test@test.com" };
+                Foo foo2 = new Foo { Email = "test2@test.com" };
+                List<Foo> foos = new List<Foo> { foo1, foo2 };
+                await genericDao.AddAsync(foos);
+                await context.SaveChangesAsync();
+            }
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+
+                //WHEN: <comment on execution>
+                bool fooExists = await genericDao.ExistsAsync(fooIdToCheck);
+
+                //THEN: <comments on expectations>
+                fooExists.Should().BeTrue();
+            }
+        }
+
+        [Test]
+        public async Task TestExistsAsyncWithNotExistingEntry()
+        {
+            //GIVEN: <comment of assumptions>
+            DbContextOptions<TestDbContext> dbContextOptions = GetDbContextOptions<TestDbContext>();
+            int fooIdToCheck = 5;
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+                Foo foo1 = new Foo { Email = "test@test.com" };
+                Foo foo2 = new Foo { Email = "test2@test.com" };
+                List<Foo> foos = new List<Foo> { foo1, foo2 };
+                await genericDao.AddAsync(foos);
+                await context.SaveChangesAsync();
+            }
+
+            using (TestDbContext context = new TestDbContext(dbContextOptions))
+            {
+                GenericDao<Foo, int> genericDao = new GenericDao<Foo, int>(context);
+
+                //WHEN: <comment on execution>
+                bool fooExists = await genericDao.ExistsAsync(fooIdToCheck);
+
+                //THEN: <comments on expectations>
+                fooExists.Should().BeFalse();
+            }
+        }
+
         /// <summary>
-        ///     Testet dass laden von Nutzern mit Pagination
+        ///     Tests the loading of users with pagination
         /// </summary>
         [Test]
         public void TestFindWithPagination()
