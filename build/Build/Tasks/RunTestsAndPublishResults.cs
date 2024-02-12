@@ -5,6 +5,7 @@ using Cake.Common.Build.AzurePipelines.Data;
 using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Test;
+using Cake.Common.Tools.ReportGenerator;
 using Cake.Core.IO;
 using Cake.Core.IO.Arguments;
 using Cake.Frosting;
@@ -42,9 +43,8 @@ namespace Build
                         Exclude = new List<string> {
                             "[*.Tests?]*" /* test projects */
                         },
-                        ExcludeByFile = new List<string> {
-                            "**/Data/Migrations/*.cs", /* EF data migrations in CustomerService.Core AND DataMigrator*/
-                            "**/*Module.cs", /* module definitions which are ServiceCollection extensions  */
+                        ExcludeByFile = new List<string>
+                        {
                         }
                     };
 
@@ -64,6 +64,14 @@ namespace Build
                             }
                         });
                 }
+                context.ReportGenerator(new GlobPattern($"{testArtifactsPath}/*.coverage.xml"), Path.Combine(testArtifactsPath, "coverage"), new ReportGeneratorSettings()
+                {
+                    ReportTypes = new List<ReportGeneratorReportType>()
+                {
+                    ReportGeneratorReportType.Cobertura,
+                    ReportGeneratorReportType.HtmlInline_AzurePipelines
+                }
+                });
             }
             finally
             {
@@ -84,6 +92,13 @@ namespace Build
                                 TestRunner = AzurePipelinesTestRunnerType.VSTest
                             });
                     }
+
+                    context.AzurePipelines().Commands.PublishCodeCoverage(new AzurePipelinesPublishCodeCoverageData
+                    {
+                        CodeCoverageTool = AzurePipelinesCodeCoverageToolType.Cobertura,
+                        SummaryFileLocation = Path.Combine(testArtifactsPath, "coverage/Cobertura.xml"),
+                        ReportDirectory = Path.Combine(testArtifactsPath, "coverage")
+                    });
                 }
             }
         }
