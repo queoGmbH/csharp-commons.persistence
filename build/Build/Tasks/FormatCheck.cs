@@ -30,10 +30,6 @@ namespace Build
                 "format",
                 new DotNetToolSettings { ArgumentCustomization = args => args.Append("whitespace").Append("--folder").Append("--verify-no-changes") });
 
-            context.DotNetTool(
-                "format",
-                new DotNetToolSettings { ArgumentCustomization = args => args.Append(context.General.SolutionName).Append("--verify-no-changes") });
-
             context.Information("Format finished! Your code looks awesome!");
         }
     }
