@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-
+using Build.Common.Builder;
 using Cake.Common.Build;
 using Cake.Common.Build.AzurePipelines.Data;
+using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Test;
 using Cake.Core.IO;
@@ -26,22 +27,39 @@ namespace Build
                     Path.Combine(context.Environment.WorkingDirectory.FullPath, testProject.Value));
             }
 
+            string testArtifactsPath = Path.Combine(context.Environment.WorkingDirectory.FullPath,
+                $"{context.General.ArtifactsDir}.tests");
+
             try
             {
                 foreach (KeyValuePair<string, string> nameAndPath in testProjects)
                 {
+                    string coverletArgs = new DotNetTestCoverletParameterBuilder()
+                    {
+                        CollectCoverage = true,
+                        CoverletOutputFormat = "opencover",
+                        CoverletOutput = $"{testArtifactsPath}/{nameAndPath.Key}.coverage.xml",
+                        Exclude = new List<string> {
+                            "[*.Tests?]*" /* test projects */
+                        },
+                        ExcludeByFile = new List<string> {
+                            "**/Data/Migrations/*.cs", /* EF data migrations in CustomerService.Core AND DataMigrator*/
+                            "**/*Module.cs", /* module definitions which are ServiceCollection extensions  */
+                        }
+                    };
+
+                    context.Information($"Coverlet args: {coverletArgs}");
 
                     context.DotNetTest(
                         nameAndPath.Value,
                         new DotNetTestSettings
                         {
                             VSTestReportPath =
-                                Path.Combine(context.Environment.WorkingDirectory.FullPath,
-                                    $"{context.General.ArtifactsDir}.tests", $"{nameAndPath.Key}.TestResult.xml"),
+                                Path.Combine(testArtifactsPath, $"{nameAndPath.Key}.TestResult.xml"),
                             Configuration = context.Tests.BuildConfig,
                             ArgumentCustomization = delegate (ProcessArgumentBuilder argument)
                             {
-                                argument.Append(new TextArgument(" /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura"));
+                                argument.Append(new TextArgument(coverletArgs));
                                 return argument;
                             }
                         });
