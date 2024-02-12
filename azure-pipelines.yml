@@ -17,18 +17,78 @@ trigger:
 - feature/*
 - bugfix/*
 
-
-#variables:
-#- group: QueoNuGetVars
 stages:
 - stage: Build
   displayName: 'Build and test package'
 
   jobs:
-  - job: buildAndTest
+  - job: buildAndTest_windows
     pool:
       vmImage: 'windows-latest'
     
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'tool'
+        arguments: 'install -g dotnet-format --ignore-failed-sources'
+
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud für Commons'
+        organization: 'queo-software'
+        scannerMode: 'MSBuild'
+        projectKey: 'queo-software_Commons.Persistence'
+        projectName: 'Commons.Persistence'
+        extraProperties: |
+          sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/.artifacts.tests/*.coverage.xml
+          sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/.artifacts.tests/*.TestResult.xml
+
+    - task: PowerShell@2
+      inputs:
+        filePath: 'build.ps1'
+        args: '--target=BuildAndTest'
+    
+    - task: SonarCloudAnalyze@1
+      inputs:
+        jdkversion: 'JAVA_HOME_17_X64'
+
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
+
+  - job: buildAndTest_linux
+    dependsOn: buildAndTest_windows
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    # .NET Core 6.0 installieren, da es noch nicht per default installiert ist
+    #- task: UseDotNet@2
+    #  displayName: 'Use .NET Core sdk'
+    #  inputs:
+    #    packageType: sdk
+    #    version: 6.0.x 
+    #    installationPath: $(Agent.ToolsDirectory)/dotnet
+    
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'tool'
+        arguments: 'install -g dotnet-format --ignore-failed-sources'
+    
+    - task: ShellScript@2
+      inputs:
+        scriptPath: 'build.sh'
+        args: '--target=BuildAndTest'
+
+  - job: BuildNuGetPackageForDeploy
+    dependsOn:
+    - buildAndTest_windows
+    - buildAndTest_linux
+    pool:
+      vmImage: 'windows-latest'
+
     steps:
     - task: DotNetCoreCLI@2
       inputs:
@@ -39,3 +99,62 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
+        args: '--target=BuildPackage'
+
+    - publish: '$(System.DefaultWorkingDirectory)/.artifacts'
+      artifact: NuGetPackage
+
+- stage: Publish
+  displayName: 'Publish to nuget.org'
+  condition: and(succeeded(), in(variables['build.sourceBranch'], 'refs/heads/main', 'refs/heads/develop'))
+
+  jobs:
+  - job: publish
+    steps:
+    - checkout: 'none'
+
+    - download: current
+      artifact: NuGetPackage
+
+    - task: NuGetAuthenticate@0
+      inputs:
+        nuGetServiceConnection: 'queoNuGetOrg'
+
+    - task: NuGetCommand@2
+      inputs:
+        command: push
+        nuGetFeedType: 'external'
+        publishFeedCredentials: 'queoNuGetOrg'
+        packagesToPush: $(Pipeline.Workspace)/**/*.nupkg
+
+  - deployment: DeployToBeta
+    displayName: Deploy to beta
+    dependsOn: publish
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/develop'))
+    pool: 
+      vmImage: 'ubuntu-latest'
+    # Creates an environment if it doesn't exist. Seems not to work. the environment must exist.
+    environment: Persistence-BetaChannel
+    strategy:
+      # Default deployment strategy, more coming...
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self 
+          - script: echo deployment to beta
+  
+  - deployment: DeployToProd
+    displayName: Deploy to prod
+    dependsOn: publish
+    condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+    pool: 
+      vmImage: 'ubuntu-latest'
+    # Creates an environment if it doesn't exist.
+    environment: Persistence-ReleaseChannel
+    strategy:
+      # Default deployment strategy, more coming...
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self 
+          - script: echo deployment to release
