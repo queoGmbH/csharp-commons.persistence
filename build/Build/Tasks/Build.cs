@@ -11,20 +11,16 @@ namespace Build
     {
         public override void Run(Context context)
         {
-            string versionPrefix, versionSuffix;
+            string versionSuffix;
             foreach (var projectToBuild in context.Lib)
             {
                 if (!context.General.IsLocal && context.General.CurrentBranch == Branches.Main)
                 {
-                    versionPrefix =
-                        $"{projectToBuild.ArtifactVersion.Major}.{projectToBuild.ArtifactVersion.Minor}.{projectToBuild.ArtifactVersion.Patch}";
                     versionSuffix = string.Empty;
                 }
                 else
                 {
-                    versionPrefix =
-                        $"{projectToBuild.ArtifactVersion.Major}.{projectToBuild.ArtifactVersion.Minor}.{projectToBuild.ArtifactVersion.Patch}-{projectToBuild.ArtifactVersion.Prerelease}";
-                    versionSuffix = $"{projectToBuild.ArtifactVersion.Build}";
+                    versionSuffix = $"{projectToBuild.ArtifactVersion.Prerelease}-{projectToBuild.ArtifactVersion.Build}";
                 }
 
                 context.DotNetBuild(Path.Combine(context.Environment.WorkingDirectory.FullPath, projectToBuild.MainProject),
