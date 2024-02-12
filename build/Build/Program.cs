@@ -14,7 +14,7 @@ namespace Build
         {
             // Register the tools
             services.UseTool("nuget:?package=NuGet.CommandLine".AsUri());
-            services.UseTool("nuget:?package=GitVersion.CommandLine".AsUri());
+            services.UseTool("dotnet:?package=GitVersion.Tool".AsUri());
             services.UseTool("nuget:?package=NUnit.ConsoleRunner".AsUri());
         }
 
