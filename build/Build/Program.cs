@@ -16,6 +16,7 @@ namespace Build
             services.UseTool("nuget:?package=NuGet.CommandLine".AsUri());
             services.UseTool("dotnet:?package=GitVersion.Tool".AsUri());
             services.UseTool("nuget:?package=NUnit.ConsoleRunner".AsUri());
+            services.UseTool("nuget:?package=ReportGenerator&version=5.1.26".AsUri());
         }
 
         public static int Main(string[] args) =>
