@@ -1,9 +1,8 @@
 using System.IO;
 
 using Build.Common.Enums;
-using Build.Common.Extensions;
 
-using Cake.Common.Tools.MSBuild;
+using Cake.Common.Tools.DotNet;
 using Cake.Frosting;
 
 namespace Build
@@ -28,15 +27,14 @@ namespace Build
                     versionSuffix = $"{projectToBuild.ArtifactVersion.Build}";
                 }
 
-                context.MSBuild(
-                    Path.Combine(context.Environment.WorkingDirectory.FullPath, projectToBuild.MainProject).AsFilePath(),
-                    settings => settings
-                        .WithTarget("pack")
-                        .WithProperty("IsPackable", "true")
-                        .WithProperty("VersionPrefix", versionPrefix)
-                        .WithProperty("VersionSuffix", versionSuffix)
-                        .WithProperty("PackageOutputPath", "../../.artifacts")
-                        .Configuration = "Release");
+                context.DotNetBuild(Path.Combine(context.Environment.WorkingDirectory.FullPath, projectToBuild.MainProject),
+                    new Cake.Common.Tools.DotNet.Build.DotNetBuildSettings()
+                    {
+                        Configuration = "Release",
+                        OutputDirectory = "./.artifacts",
+                        Verbosity = DotNetVerbosity.Normal,
+                        VersionSuffix = versionSuffix
+                    });
             }
         }
     }

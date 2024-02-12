@@ -18,7 +18,7 @@ namespace Build
 
         public IList<Lib> Lib { get; } = new List<Lib>() {
             new Lib() { BuildConfig = "Release", MainProject = @"src\Commons.Persistence\Commons.Persistence.csproj" },
-            new Lib() {BuildConfig = "Release", MainProject = @"src\Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj"}
+            new Lib() { BuildConfig = "Release", MainProject = @"src\Commons.Persistence.EntityFramework\Commons.Persistence.EntityFramework.csproj" }
         };
 
         public General General { get; } = new();
