@@ -33,29 +33,10 @@ stages:
         custom: 'tool'
         arguments: 'install -g dotnet-format --ignore-failed-sources'
 
-    - task: SonarCloudPrepare@1
-      inputs:
-        SonarCloud: 'SonarCloud für Commons'
-        organization: 'queo-software'
-        scannerMode: 'MSBuild'
-        projectKey: 'queo-software_Commons.Persistence'
-        projectName: 'Commons.Persistence'
-        extraProperties: |
-          sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/.artifacts.tests/*.coverage.xml
-          sonar.cs.nunit.reportsPaths=$(Build.SourcesDirectory)/.artifacts.tests/*.TestResult.xml
-
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
         args: '--target=BuildAndTest'
-    
-    - task: SonarCloudAnalyze@1
-      inputs:
-        jdkversion: 'JAVA_HOME_17_X64'
-
-    - task: SonarCloudPublish@1
-      inputs:
-        pollingTimeoutSec: '300'
 
   - job: buildAndTest_linux
     dependsOn: buildAndTest_windows

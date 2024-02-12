@@ -57,12 +57,12 @@ namespace Build.Common.Services.Impl
                     case Branches.Develop:
                         logInformation.Invoke("Remote Develop Branch - es wird Beta + Buildnummer angefügt.");
                         tag = "local-beta";
-                        build = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"); ;
+                        build = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
                         break;
                     default:
                         logInformation.Invoke("Remote Branch - es wird der Branchname + Buildnummer angefügt.");
                         tag = $"local-{_branchService.Clean(branchName)}";
-                        build = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"); ;
+                        build = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
                         break;
                 }
             }
