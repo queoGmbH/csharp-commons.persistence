@@ -27,12 +27,12 @@ stages:
       vmImage: 'windows-latest'
     
     steps:
-    # .NET Core 6.0 Runtime installieren
+    # .NET Core 6.0 SDK installieren
     - task: UseDotNet@2
-      displayName: 'Use .NET Core runtime'
+      displayName: 'Use .NET Core sdk'
       inputs:
-        packageType: runtime
-        version: 6.0.x
+        packageType: sdk
+        version: 6.0.100
 
     # .NET Core 8.0 SDK installieren
     - task: UseDotNet@2
