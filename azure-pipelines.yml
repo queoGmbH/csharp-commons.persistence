@@ -27,6 +27,20 @@ stages:
       vmImage: 'windows-latest'
     
     steps:
+    # .NET Core 6.0 installieren, da es noch nicht per default installiert ist
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk'
+      inputs:
+        packageType: sdk
+        version: 6.0.x 
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+    # .NET Core 8.0 installieren, da es noch nicht per default installiert ist
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk'
+      inputs:
+        packageType: sdk
+        version: 8.0.x 
+        installationPath: $(Agent.ToolsDirectory)/dotnet
     - task: DotNetCoreCLI@2
       inputs:
         command: 'custom'
