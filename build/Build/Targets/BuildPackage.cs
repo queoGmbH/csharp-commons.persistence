@@ -1,6 +1,6 @@
 ﻿using Cake.Frosting;
 
-namespace Build.Targets
+namespace Build
 {
     public partial class BuildPackage : FrostingTask<Context>
     {
