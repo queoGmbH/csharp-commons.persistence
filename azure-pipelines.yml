@@ -40,6 +40,12 @@ stages:
       inputs:
         packageType: sdk
         version: 8.0.101
+    
+    - script: echo "check for scheduled run..."
+    - script: echo "this is a scheduled run"
+      condition: eq(variables['SYSTEM_TRIGGER_TYPE'], 'Schedule')
+    - script: echo "this is also a scheduled run"
+      condition: eq(variables['Build.Reason'], 'Schedule')
 
     - task: DotNetCoreCLI@2
       inputs:
@@ -50,7 +56,7 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
-        args: '--target=BuildAndTest'
+        arguments: '--target=BuildAndTest'
 
   - job: buildAndTest_linux
     dependsOn: buildAndTest_windows
@@ -64,14 +70,12 @@ stages:
       inputs:
         packageType: sdk
         version: 6.0.x 
-        installationPath: $(Agent.ToolsDirectory)/dotnet
     # .NET Core 8.0 installieren, da es noch nicht per default installiert ist
     - task: UseDotNet@2
       displayName: 'Use .NET Core sdk'
       inputs:
         packageType: sdk
         version: 8.0.x 
-        installationPath: $(Agent.ToolsDirectory)/dotnet
     
     - task: DotNetCoreCLI@2
       inputs:
@@ -101,7 +105,7 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
-        args: '--target=BuildPackage'
+        arguments: '--target=BuildPackage'
 
     - publish: '$(System.DefaultWorkingDirectory)/.artifacts'
       artifact: NuGetPackage
