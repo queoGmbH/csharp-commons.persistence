@@ -41,12 +41,6 @@ stages:
         packageType: sdk
         version: 8.0.101
     
-    - script: echo "check for scheduled run..."
-    - script: echo "this is a scheduled run"
-      condition: eq(variables['SYSTEM_TRIGGER_TYPE'], 'Schedule')
-    - script: echo "this is also a scheduled run"
-      condition: eq(variables['Build.Reason'], 'Schedule')
-
     - task: DotNetCoreCLI@2
       inputs:
         command: 'custom'
@@ -126,7 +120,7 @@ stages:
 
 - stage: Publish
   displayName: 'Publish to nuget.org'
-  condition: and(succeeded(), in(variables['build.sourceBranch'], 'refs/heads/main', 'refs/heads/develop'))
+  condition: and(succeeded(), in(variables['build.sourceBranch'], 'refs/heads/main', 'refs/heads/develop'), ne(variables['Build.Reason'], 'Schedule'))
 
   jobs:
   - job: publish
