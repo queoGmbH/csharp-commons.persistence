@@ -6,6 +6,7 @@ using Cake.Common.Diagnostics;
 using Cake.Common.Tools.DotNet;
 using Cake.Common.Tools.DotNet.Test;
 using Cake.Common.Tools.ReportGenerator;
+using Cake.Core;
 using Cake.Core.IO;
 using Cake.Core.IO.Arguments;
 using Cake.Frosting;
@@ -64,14 +65,17 @@ namespace Build
                             }
                         });
                 }
-                context.ReportGenerator(new GlobPattern($"{testArtifactsPath}/*.coverage.net8.0.xml"), Path.Combine(testArtifactsPath, "coverage"), new ReportGeneratorSettings()
+                if (context.Environment.Platform.IsWindows())
                 {
-                    ReportTypes = new List<ReportGeneratorReportType>()
-                {
-                    ReportGeneratorReportType.Cobertura,
-                    ReportGeneratorReportType.HtmlInline_AzurePipelines
+                    context.ReportGenerator(new GlobPattern($"{testArtifactsPath}/*.coverage.net8.0.xml"), Path.Combine(testArtifactsPath, "coverage"), new ReportGeneratorSettings()
+                    {
+                        ReportTypes = new List<ReportGeneratorReportType>()
+                        {
+                            ReportGeneratorReportType.Cobertura,
+                            ReportGeneratorReportType.HtmlInline_AzurePipelines
+                        }
+                    });
                 }
-                });
             }
             finally
             {
@@ -92,13 +96,15 @@ namespace Build
                                 TestRunner = AzurePipelinesTestRunnerType.VSTest
                             });
                     }
-
-                    context.AzurePipelines().Commands.PublishCodeCoverage(new AzurePipelinesPublishCodeCoverageData
+                    if (context.Environment.Platform.IsWindows())
                     {
-                        CodeCoverageTool = AzurePipelinesCodeCoverageToolType.Cobertura,
-                        SummaryFileLocation = Path.Combine(testArtifactsPath, "coverage/Cobertura.xml"),
-                        ReportDirectory = Path.Combine(testArtifactsPath, "coverage")
-                    });
+                        context.AzurePipelines().Commands.PublishCodeCoverage(new AzurePipelinesPublishCodeCoverageData
+                        {
+                            CodeCoverageTool = AzurePipelinesCodeCoverageToolType.Cobertura,
+                            SummaryFileLocation = Path.Combine(testArtifactsPath, "coverage/Cobertura.xml"),
+                            ReportDirectory = Path.Combine(testArtifactsPath, "coverage")
+                        });
+                    }
                 }
             }
         }

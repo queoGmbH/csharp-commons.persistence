@@ -50,7 +50,7 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
-        args: '--target=BuildAndTest'
+        arguments: '--target=BuildAndTest'
 
   - job: buildAndTest_linux
     dependsOn: buildAndTest_windows
@@ -113,7 +113,7 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
-        args: '--target=BuildPackage'
+        arguments: '--target=BuildPackage'
 
     - publish: '$(System.DefaultWorkingDirectory)/.artifacts'
       artifact: NuGetPackage
