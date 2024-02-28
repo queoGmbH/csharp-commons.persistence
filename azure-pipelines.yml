@@ -56,7 +56,7 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
-        arguments: '--target=BuildAndTest'
+        args: '--target=BuildAndTest'
 
   - job: buildAndTest_linux
     dependsOn: buildAndTest_windows
@@ -96,6 +96,20 @@ stages:
       vmImage: 'windows-latest'
 
     steps:
+        # .NET Core 6.0 SDK installieren
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk'
+      inputs:
+        packageType: sdk
+        version: 6.0.100
+
+    # .NET Core 8.0 SDK installieren
+    - task: UseDotNet@2
+      displayName: 'Use .NET Core sdk'
+      inputs:
+        packageType: sdk
+        version: 8.0.101
+
     - task: DotNetCoreCLI@2
       inputs:
         command: 'custom'
@@ -105,7 +119,7 @@ stages:
     - task: PowerShell@2
       inputs:
         filePath: 'build.ps1'
-        arguments: '--target=BuildPackage'
+        args: '--target=BuildPackage'
 
     - publish: '$(System.DefaultWorkingDirectory)/.artifacts'
       artifact: NuGetPackage
