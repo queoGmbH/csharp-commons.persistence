@@ -48,9 +48,8 @@ public long AnzahlDerFilme()
 ## How to use it
 - include Nuget-Package (queo.commons.persistance)
 
-```powershell
-Find-Package queo.commons.persistance 
-Install-Package queo.commons.persistance -ProjectName MyProject
+```csharp
+<PackageReference Include="Queo.Commons.Persistence" Version="3.0.0" />
 ```
 
 - Register the Dao
