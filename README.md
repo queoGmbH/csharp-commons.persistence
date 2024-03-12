@@ -1,6 +1,7 @@
 # Commons.Persistence
 
-[![Build Status](https://dev.azure.com/queo-commons/Commons-OpenSource/_apis/build/status%2FqueoGmbH.csharp-commons.persistence?branchName=main)](https://dev.azure.com/queo-commons/Commons-OpenSource/_build/latest?definitionId=4&branchName=main) [![Build Status](https://dev.azure.com/queo-commons/Commons-OpenSource/_apis/build/status%2FqueoGmbH.csharp-commons.persistence?branchName=develop)](https://dev.azure.com/queo-commons/Commons-OpenSource/_build/latest?definitionId=4&branchName=develop)
+Pipeline Main: [![Build Status](https://dev.azure.com/queo-commons/Commons-OpenSource/_apis/build/status%2FqueoGmbH.csharp-commons.persistence?branchName=main)](https://dev.azure.com/queo-commons/Commons-OpenSource/_build/latest?definitionId=4&branchName=main)
+Pipeline Develop: [![Build Status](https://dev.azure.com/queo-commons/Commons-OpenSource/_apis/build/status%2FqueoGmbH.csharp-commons.persistence?branchName=develop)](https://dev.azure.com/queo-commons/Commons-OpenSource/_build/latest?definitionId=4&branchName=develop)
 
 ## Description
 To be able to query or change data persistently in a database, for example. 
@@ -57,4 +58,3 @@ Install-Package queo.commons.persistance -ProjectName MyProject
 - Create a new class to be able to implement the dao
 - Instantiate new Dao 
 - Now you can use the Dao
-```
