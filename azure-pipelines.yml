@@ -130,7 +130,7 @@ stages:
     - download: current
       artifact: NuGetPackage
 
-    - task: NuGetAuthenticate@0
+    - task: NuGetAuthenticate@1
       inputs:
         nuGetServiceConnection: 'queoNuGetOrg'
 
