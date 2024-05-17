@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 
 using Queo.Commons.Persistence.Infrastructure.TransactionManager;
+using Queo.Commons.Persistence.Filter.FilterAttributes;
+
+using System.Linq;
 
 namespace Queo.Commons.Persistence.Filter
 {
@@ -28,13 +32,30 @@ namespace Queo.Commons.Persistence.Filter
         /// <inheritdoc />
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            bool readOnlyTransaction = context.HttpContext.Request.Method == "GET";
+            bool readOnlyTransaction = TransactionIsReadOnly(context);
             _transactionManager.BeginTransaction(readOnlyTransaction);
         }
 
         /// <inheritdoc />
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
+        }
+
+        private bool TransactionIsReadOnly(ResourceExecutingContext context)
+        {
+            // Check if the request is a GET request
+            bool readOnlyTransaction = context.HttpContext.Request.Method == "GET";
+
+            bool notReadOnlyTransactionIsDefined = false;
+
+            if (context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
+            {
+                // Check if the TransactionNotReadOnlyAttribute is defined on the method
+                notReadOnlyTransactionIsDefined = controllerActionDescriptor.MethodInfo.GetCustomAttributes(inherit: true)
+                    .Any(a => a.GetType().Equals(typeof(TransactionNotReadOnlyAttribute)));
+            }
+
+            return readOnlyTransaction && !notReadOnlyTransactionIsDefined;
         }
     }
 }
