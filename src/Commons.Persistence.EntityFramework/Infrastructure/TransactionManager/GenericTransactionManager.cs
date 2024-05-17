@@ -41,7 +41,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
         }
 
         /// <inheritdoc />
-        public void CommitTransaction()
+        public void SaveChangesAndCommitTransaction()
         {
             if (!TransactionIsActive())
             {
@@ -54,13 +54,12 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
                 _logger.LogWarning("Transaction is read-only. No commit allowed.");
                 return;
             }
-
+            _dbContext.SaveChanges();
             _transaction!.Commit();
-
         }
 
         /// <inheritdoc />
-        public async Task CommitTransactionAsync()
+        public async Task SaveChangesAndCommitTransactionAsync()
         {
             if (!TransactionIsActive())
             {
@@ -74,6 +73,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
                 return;
             }
 
+            await _dbContext.SaveChangesAsync();
             await _transaction!.CommitAsync();
         }
 

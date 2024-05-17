@@ -21,12 +21,12 @@ namespace Queo.Commons.Persistence.Infrastructure.TransactionManager
         /// <summary>
         /// Commits the current transaction.
         /// </summary>
-        void CommitTransaction();
+        void SaveChangesAndCommitTransaction();
 
         /// <summary>
         /// Commits the current transaction.
         /// </summary>
-        Task CommitTransactionAsync();
+        Task SaveChangesAndCommitTransactionAsync();
 
         /// <summary>
         /// Rolls back the current transaction.

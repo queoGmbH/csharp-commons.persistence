@@ -21,6 +21,7 @@ namespace Queo.Commons.Persistence.Filter
         /// ctor.
         /// </summary>
         /// <param name="transactionManager"></param>
+        /// <param name="logger"></param>
         public ResourceFilter(ITransactionManager transactionManager, ILogger<ResourceFilter> logger)
         {
             _transactionManager = transactionManager;
