@@ -10,12 +10,13 @@ namespace Queo.Commons.Persistence.Infrastructure.TransactionManager
         /// <summary>
         /// Begins a new transaction.
         /// </summary>
-        void BeginTransaction();
+        /// 
+        void BeginTransaction(bool readOnly);
 
         /// <summary>
         /// Begins a new transaction.
         /// </summary>
-        Task BeginTransactionAsync();
+        Task BeginTransactionAsync(bool readOnly);
 
         /// <summary>
         /// Commits the current transaction.

@@ -13,6 +13,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
     {
         private readonly T _dbContext;
         private IDbContextTransaction? _transaction;
+        private bool _readOnly;
         private readonly ILogger<GenericTransactionManager<T>> _logger;
 
         /// <summary>
@@ -26,41 +27,54 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
         }
 
         /// <inheritdoc />
-        public void BeginTransaction()
+        public void BeginTransaction(bool readOnly)
         {
             _transaction = _dbContext.Database.BeginTransaction();
+            _readOnly = readOnly;
         }
 
         /// <inheritdoc />
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(bool readOnly)
         {
             _transaction = await _dbContext.Database.BeginTransactionAsync();
+            _readOnly = readOnly;
         }
 
         /// <inheritdoc />
         public void CommitTransaction()
         {
-            if (TransactionIsActive())
-            {
-                _transaction!.Commit();
-            }
-            else
+            if (!TransactionIsActive())
             {
                 _logger.LogWarning("No transaction to commit.");
+                return;
             }
+
+            if (_readOnly)
+            {
+                _logger.LogWarning("Transaction is read-only. No commit allowed.");
+                return;
+            }
+
+            _transaction!.Commit();
+
         }
 
         /// <inheritdoc />
         public async Task CommitTransactionAsync()
         {
-            if (TransactionIsActive())
-            {
-                await _transaction!.CommitAsync();
-            }
-            else
+            if (!TransactionIsActive())
             {
                 _logger.LogWarning("No transaction to commit.");
+                return;
             }
+
+            if (_readOnly)
+            {
+                _logger.LogWarning("Transaction is read-only. No commit allowed.");
+                return;
+            }
+
+            await _transaction!.CommitAsync();
         }
 
         /// <inheritdoc />
