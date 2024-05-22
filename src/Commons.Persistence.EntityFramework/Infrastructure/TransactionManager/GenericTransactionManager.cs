@@ -49,7 +49,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
                 return;
             }
 
-            if (_readOnly)
+            if (_readOnly && _dbContext.ChangeTracker.HasChanges())
             {
                 _logger.LogWarning("Transaction is read-only. No commit allowed.");
                 return;
@@ -67,7 +67,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionMan
                 return;
             }
 
-            if (_readOnly)
+            if (_readOnly && _dbContext.ChangeTracker.HasChanges())
             {
                 _logger.LogWarning("Transaction is read-only. No commit allowed.");
                 return;

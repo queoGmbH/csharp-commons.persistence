@@ -9,7 +9,7 @@ namespace Queo.Commons.Persistence.Filter
     /// <summary>
     ///     AlwaysRunResultFilter
     /// </summary>
-    public class AlwaysRunResultFilter : IAlwaysRunResultFilter
+    public class TransactionCommitFilter : IAlwaysRunResultFilter
     {
         private readonly ITransactionManager _transactionManager;
 
@@ -17,7 +17,7 @@ namespace Queo.Commons.Persistence.Filter
         /// ctor.
         /// </summary>
         /// <param name="transactionManager"></param>
-        public AlwaysRunResultFilter(ITransactionManager transactionManager)
+        public TransactionCommitFilter(ITransactionManager transactionManager)
         {
             _transactionManager = transactionManager;
         }

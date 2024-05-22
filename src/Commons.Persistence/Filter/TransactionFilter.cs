@@ -6,29 +6,28 @@ using Queo.Commons.Persistence.Infrastructure.TransactionManager;
 using Queo.Commons.Persistence.Filter.FilterAttributes;
 
 using System.Linq;
+using System.Reflection;
 
 namespace Queo.Commons.Persistence.Filter
 {
     /// <summary>
-    /// ResourceFilter is used to start a transaction before the request is processed.
+    /// TransactionFilter is used to start a transaction before the request is processed.
     /// </summary>
-    public class ResourceFilter : IResourceFilter
+    public class TransactionFilter : IResourceFilter
     {
         private readonly ITransactionManager _transactionManager;
-        private readonly ILogger<ResourceFilter> _logger;
+        private readonly ILogger<TransactionFilter> _logger;
 
         /// <summary>
         /// ctor.
         /// </summary>
         /// <param name="transactionManager"></param>
         /// <param name="logger"></param>
-        public ResourceFilter(ITransactionManager transactionManager, ILogger<ResourceFilter> logger)
+        public TransactionFilter(ITransactionManager transactionManager, ILogger<TransactionFilter> logger)
         {
             _transactionManager = transactionManager;
             _logger = logger;
         }
-        // Get endpunkt hier als Readonly, mittels attribut am controler kann diese auf schreibbar gesetzt werden
-        // Mittels Attribut kann man die Methode auf schreibbar setzen, obwohl sie get ist (readonly)
 
         /// <inheritdoc />
         public void OnResourceExecuting(ResourceExecutingContext context)
@@ -44,19 +43,19 @@ namespace Queo.Commons.Persistence.Filter
 
         private bool TransactionIsReadOnly(ResourceExecutingContext context)
         {
-            // Check if the request is a GET request
             bool readOnlyTransaction = context.HttpContext.Request.Method == "GET";
-
-            bool notReadOnlyTransactionIsDefined = false;
 
             if (context.ActionDescriptor is ControllerActionDescriptor controllerActionDescriptor)
             {
-                // Check if the TransactionNotReadOnlyAttribute is defined on the method
-                notReadOnlyTransactionIsDefined = controllerActionDescriptor.MethodInfo.GetCustomAttributes(inherit: true)
-                    .Any(a => a.GetType().Equals(typeof(TransactionNotReadOnlyAttribute)));
+                TransactionAttribute? transactionAttribute = controllerActionDescriptor.MethodInfo.GetCustomAttributes<TransactionAttribute>(inherit: true).FirstOrDefault();
+
+                if (transactionAttribute != null)
+                {
+                    readOnlyTransaction = transactionAttribute.ReadOnly;
+                }
             }
 
-            return readOnlyTransaction && !notReadOnlyTransactionIsDefined;
+            return readOnlyTransaction;
         }
     }
 }
