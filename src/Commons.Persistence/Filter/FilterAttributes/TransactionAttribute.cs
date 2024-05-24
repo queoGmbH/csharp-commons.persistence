@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using System;
 
 namespace Queo.Commons.Persistence.Filter.FilterAttributes
 {
     /// <summary>
     /// TransactionAttribute class.
     /// </summary>
-    public class TransactionAttribute : ResultFilterAttribute
+    public class TransactionAttribute : Attribute
     {
         /// <summary>
         /// Readonly property for the TransactionAttribute.
         /// </summary>
-        public bool ReadOnly { get; set; } = true;
+        public bool ReadOnly { get; set; } = false;
     }
 }
