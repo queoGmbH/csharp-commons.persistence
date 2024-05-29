@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 	<Nullable>enable</Nullable>
-    <VersionPrefix>3.0.1</VersionPrefix>
+    <VersionPrefix>3.0.2</VersionPrefix>
     <AssemblyName>Queo.Commons.Persistence</AssemblyName>
     <RootNamespace>Queo.Commons.Persistence</RootNamespace>
     <Authors>queo/software/csharp</Authors>
