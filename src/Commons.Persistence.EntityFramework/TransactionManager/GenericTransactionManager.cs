@@ -1,10 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
-using Queo.Commons.Persistence.Infrastructure.TransactionManager;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
-namespace Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionManager
+/* Nicht gemergte Änderung aus Projekt "Commons.Persistence.EntityFramework (net6.0)"
+Vor:
+using Microsoft.Extensions.Logging;
+Nach:
+using Microsoft.Extensions.Logging;
+using Queo;
+using Queo.Commons;
+using Queo.Commons.Persistence;
+using Queo.Commons.Persistence.EntityFramework;
+using Queo.Commons.Persistence.EntityFramework.Infrastructure;
+using Queo.Commons.Persistence.EntityFramework.Infrastructure.TransactionManager;
+using Queo.Commons.Persistence.EntityFramework.TransactionManager;
+*/
+using Microsoft.Extensions.Logging;
+using Queo.Commons.Persistence.TransactionManager;
+
+namespace Queo.Commons.Persistence.EntityFramework.TransactionManager
 {
     /// <summary>
     /// TransactionManager class.

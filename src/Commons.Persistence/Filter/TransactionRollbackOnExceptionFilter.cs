@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
-
-using Queo.Commons.Persistence.Infrastructure.TransactionManager;
+using Queo.Commons.Persistence.TransactionManager;
 
 namespace Queo.Commons.Persistence.Filter
 {
