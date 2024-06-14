@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Queo.Commons.Persistence.Infrastructure.TransactionManager
+namespace Queo.Commons.Persistence.TransactionManager
 {
     /// <summary>
     /// TransactionManager interface.

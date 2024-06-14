@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Filters;
-
-using Queo.Commons.Persistence.Infrastructure.TransactionManager;
+using Queo.Commons.Persistence.TransactionManager;
 
 namespace Queo.Commons.Persistence.Filter
 {
