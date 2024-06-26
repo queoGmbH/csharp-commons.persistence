@@ -56,3 +56,4 @@ public long AnzahlDerFilme()
 - Create a new class to be able to implement the dao
 - Instantiate new Dao 
 - Now you can use the Dao
+- If you want to use the TransactionHandling, you have to call the method "UseTransactionHandling <TDbContext>(this IServiceCollection services)" from the TransactionHandlingExtensions class inside your program.cs or startup.cs.
