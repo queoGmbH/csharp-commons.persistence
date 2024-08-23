@@ -1,6 +1,7 @@
 using System;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Queo.Commons.Persistence.Tests
 {
@@ -16,7 +17,7 @@ namespace Queo.Commons.Persistence.Tests
 
             string expectedString = $"Type: Entity, Id: 3, Bid: {businessId.ToString()}";
             string actualString = entity.ToString();
-            Assert.AreEqual(expectedString, actualString);
+            ClassicAssert.AreEqual(expectedString, actualString);
         }
 
         [Test]
@@ -25,7 +26,7 @@ namespace Queo.Commons.Persistence.Tests
             Entity firstReference = new Entity();
             Entity secondReference = firstReference;
 
-            Assert.IsTrue(firstReference.Equals(secondReference));
+            Assert.That(firstReference.Equals(secondReference));
         }
 
         [Test]
@@ -35,7 +36,7 @@ namespace Queo.Commons.Persistence.Tests
             Guid businessId = Guid.NewGuid();
             Entity firstObject = new Entity(id, businessId);
             Entity secondObject = new Entity(id, businessId);
-            Assert.IsTrue(firstObject.Equals(secondObject));
+            Assert.That(firstObject.Equals(secondObject));
         }
 
         [Test]
@@ -46,7 +47,7 @@ namespace Queo.Commons.Persistence.Tests
             Entity firstObject = new Entity(firstBusinessId);
             Entity secondObject = new Entity(secondBusinessId);
 
-            Assert.IsFalse(firstObject.Equals(secondObject));
+            ClassicAssert.IsFalse(firstObject.Equals(secondObject));
         }
 
         [Test]
@@ -56,8 +57,8 @@ namespace Queo.Commons.Persistence.Tests
             Entity entity = new Entity(businessId);
             Foo foo = new Foo(businessId);
 
-            Assert.IsFalse(entity.Equals(foo));
-            Assert.IsFalse(foo.Equals(entity));
+            ClassicAssert.IsFalse(entity.Equals(foo));
+            ClassicAssert.IsFalse(foo.Equals(entity));
         }
     }
 
