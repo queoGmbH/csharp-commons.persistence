@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Queo.Commons.Persistence.Exceptions;
 using System.Globalization;
 using System.Threading;
@@ -15,7 +16,7 @@ namespace Queo.Commons.Persistence.Tests.Exceptions
             CultureInfo currentCulture = Thread.CurrentThread.CurrentUICulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("de-DE");
             EntityNotFoundException exception = new EntityNotFoundException();
-            Assert.AreEqual("Die Entität wurde nicht gefunden.", exception.Message);
+            ClassicAssert.AreEqual("Die Entität wurde nicht gefunden.", exception.Message);
             Thread.CurrentThread.CurrentUICulture = currentCulture;
         }
 
@@ -25,7 +26,7 @@ namespace Queo.Commons.Persistence.Tests.Exceptions
             CultureInfo currentCulture = Thread.CurrentThread.CurrentUICulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             EntityNotFoundException exception = new EntityNotFoundException();
-            Assert.AreEqual("The entity was not found.", exception.Message);
+            ClassicAssert.AreEqual("The entity was not found.", exception.Message);
             Thread.CurrentThread.CurrentUICulture = currentCulture;
         }
 
@@ -35,7 +36,7 @@ namespace Queo.Commons.Persistence.Tests.Exceptions
             CultureInfo currentCulture = Thread.CurrentThread.CurrentUICulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-US");
             EntityNotFoundException exception = new EntityNotFoundException(typeof(EntityNotFoundException), "42");
-            Assert.AreEqual("The entity was not found. (Type: EntityNotFoundException, ID: 42)", exception.Message);
+            ClassicAssert.AreEqual("The entity was not found. (Type: EntityNotFoundException, ID: 42)", exception.Message);
             Thread.CurrentThread.CurrentUICulture = currentCulture;
         }
     }

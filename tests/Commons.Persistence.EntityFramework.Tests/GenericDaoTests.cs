@@ -7,7 +7,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 
 using NUnit.Framework;
-
+using NUnit.Framework.Legacy;
 using Queo.Commons.Persistence.EntityFramework.Generic;
 using Queo.Commons.Persistence.EntityFramework.Tests.TestClasses;
 
@@ -48,7 +48,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 int expectedFooCount = 2;
 
                 //THEN: <comments on expectations>
-                Assert.AreEqual(expectedFooCount, actualFoos.Count);
+                ClassicAssert.AreEqual(expectedFooCount, actualFoos.Count);
                 actualFoos.Should().BeEquivalentTo(expectedFoos);
             }
         }
@@ -141,7 +141,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 int expectedFooCount = 2;
 
                 //THEN: <comments on expectations>
-                Assert.AreEqual(expectedFooCount, actualFoos.Count);
+                ClassicAssert.AreEqual(expectedFooCount, actualFoos.Count);
                 actualFoos.Should().BeEquivalentTo(expectedFoos);
             }
         }
@@ -238,8 +238,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 IPage<Foo> actualFoos = genericDao.Find(pageRequest);
 
                 //THEN: <comments on expectations>
-                Assert.AreEqual(fooCount, addedFoos.Count);
-                Assert.AreEqual(expectedFooCount, actualFoos.NumberOfElements);
+                ClassicAssert.AreEqual(fooCount, addedFoos.Count);
+                ClassicAssert.AreEqual(expectedFooCount, actualFoos.NumberOfElements);
             }
         }
         /// <summary>
@@ -279,8 +279,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
 
 
                 //THEN: <comments on expectations>
-                Assert.AreEqual(fooCount, addedFoos.Count);
-                Assert.AreEqual(expectedFooCount, actualFoos.NumberOfElements);
+                ClassicAssert.AreEqual(fooCount, addedFoos.Count);
+                ClassicAssert.AreEqual(expectedFooCount, actualFoos.NumberOfElements);
             }
         }
 
@@ -415,7 +415,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
 
                 //THEN: <comments on expectations>
                 int expectedCount = 4;
-                Assert.AreEqual(expectedCount, actualCount);
+                ClassicAssert.AreEqual(expectedCount, actualCount);
             }
         }
 
@@ -445,7 +445,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
 
                 //THEN: <comments on expectations>
                 int expectedCount = 4;
-                Assert.AreEqual(expectedCount, actualCount);
+                ClassicAssert.AreEqual(expectedCount, actualCount);
             }
         }
 
@@ -529,7 +529,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo actualFoo = genericDao.Get(expectedFoo.Id);
 
                 //THEN: <comments on expectations>
-                Assert.AreEqual(expectedFoo, actualFoo);
+                ClassicAssert.AreEqual(expectedFoo, actualFoo);
             }
         }
 
@@ -555,7 +555,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
                 Foo actualFoo = await genericDao.GetAsync(expectedFoo.Id);
 
                 //THEN: <comments on expectations>
-                Assert.AreEqual(expectedFoo, actualFoo);
+                ClassicAssert.AreEqual(expectedFoo, actualFoo);
             }
         }
     }
