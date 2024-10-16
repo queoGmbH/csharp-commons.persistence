@@ -59,5 +59,5 @@ public long AnzahlDerFilme()
 - If you want to use the TransactionHandling, you have to add the following inside your program.cs or startup.cs.
 
 ```csharp
-UseTransactionHandling <TDbContext>(this IServiceCollection services)
+UseTransactionHandling <TDbContext>(this IServiceCollection services);
 ```
