@@ -15,7 +15,7 @@ namespace Queo.Commons.Persistence.Tests.Generic
 
             // Generate a proxy
             ProxyGenerator proxyGenerator = new();
-            Entity<int> proxy = (Entity<int>) proxyGenerator.CreateClassProxy(entity.GetType(), new object[] { });
+            Entity<int> proxy = (Entity<int>)proxyGenerator.CreateClassProxy(entity.GetType(), new object[] { });
 
             Type type = proxy.GetType();
             Type unproxiedType = proxy.GetTypeUnproxied();
