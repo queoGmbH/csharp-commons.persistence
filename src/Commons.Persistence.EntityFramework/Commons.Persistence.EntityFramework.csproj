@@ -3,7 +3,7 @@
   <PropertyGroup>
 	<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 	<Nullable>enable</Nullable>
-    <VersionPrefix>3.0.1</VersionPrefix>
+    <VersionPrefix>3.1.0</VersionPrefix>
     <AssemblyName>Queo.Commons.Persistence.EntityFramework</AssemblyName>
     <RootNamespace>Queo.Commons.Persistence.EntityFramework</RootNamespace>
     <Authors>queo/software/csharp</Authors>
@@ -29,12 +29,12 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.8" />
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Queo.Commons.Checks" Version="3.0.1" />
+    <PackageReference Include="Queo.Commons.Checks" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>

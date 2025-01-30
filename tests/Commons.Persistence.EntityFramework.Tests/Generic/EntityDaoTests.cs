@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 using Queo.Commons.Persistence.EntityFramework.Generic;
 using Queo.Commons.Persistence.EntityFramework.Tests.TestClasses;
 using Queo.Commons.Persistence.Exceptions;
@@ -74,8 +75,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
                 Guid nonExistentBusinessId = Guid.Empty;
                 EntityNotFoundException? entityNotFoundException = Assert.Throws<EntityNotFoundException>(() => entityDao.GetByBusinessId(nonExistentBusinessId));
-                Assert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
-                Assert.AreEqual(nonExistentBusinessId.ToString(), entityNotFoundException.Id);
+                ClassicAssert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
+                ClassicAssert.AreEqual(nonExistentBusinessId.ToString(), entityNotFoundException.Id);
             }
         }
 
@@ -101,8 +102,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 EntityDao<EntityWithStringKey, string> entityDao = new EntityDao<EntityWithStringKey, string>(context);
                 Guid nonExistentBusinessId = Guid.Empty;
                 EntityNotFoundException? entityNotFoundException = Assert.ThrowsAsync<EntityNotFoundException>(() => entityDao.GetByBusinessIdAsync(nonExistentBusinessId));
-                Assert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
-                Assert.AreEqual(nonExistentBusinessId.ToString(), entityNotFoundException.Id);
+                ClassicAssert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
+                ClassicAssert.AreEqual(nonExistentBusinessId.ToString(), entityNotFoundException.Id);
             }
         }
 
@@ -143,7 +144,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 IList<EntityWithStringKey> actualEntites = entityDao.FindByBusinessIds(idsToFind);
                 int expectedEntityCount = 2;
 
-                Assert.AreEqual(expectedEntityCount, actualEntites.Count);
+                ClassicAssert.AreEqual(expectedEntityCount, actualEntites.Count);
 
                 actualEntites.Should().BeEquivalentTo(entitiesToFind);
             }
@@ -169,7 +170,7 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 IList<EntityWithStringKey> actualEntites = await entityDao.FindByBusinessIdsAsync(idsToFind);
                 int expectedEntityCount = 2;
 
-                Assert.AreEqual(expectedEntityCount, actualEntites.Count);
+                ClassicAssert.AreEqual(expectedEntityCount, actualEntites.Count);
 
                 actualEntites.Should().BeEquivalentTo(entitiesToFind);
             }
@@ -186,8 +187,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 {
                     entityDao.Get(notExistentKey);
                 });
-                Assert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
-                Assert.AreEqual(notExistentKey, entityNotFoundException.Id);
+                ClassicAssert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
+                ClassicAssert.AreEqual(notExistentKey, entityNotFoundException.Id);
             }
         }
 
@@ -202,8 +203,8 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests.Generic
                 {
                     return entityDao.GetAsync(notExistentKey);
                 });
-                Assert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
-                Assert.AreEqual(notExistentKey, entityNotFoundException!.Id);
+                ClassicAssert.AreEqual(typeof(EntityWithStringKey), entityNotFoundException!.EntityType);
+                ClassicAssert.AreEqual(notExistentKey, entityNotFoundException!.Id);
             }
         }
     }

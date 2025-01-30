@@ -2,10 +2,14 @@ using System.Runtime.CompilerServices;
 
 using Microsoft.EntityFrameworkCore;
 
+using Queo.Commons.Persistence.EntityFramework.Tests.TestClasses;
+
 namespace Queo.Commons.Persistence.EntityFramework.Tests
 {
     public abstract class PersistenceBaseTest
     {
+        internal DbContextOptions<TestDbContext> ContextOptions { get; private set; }
+
         /// <summary>
         ///     Stellt in Abhängigkeit der aufrufenden Methode einen Namen für die In-Memory-DB zur Verfügung
         /// </summary>
@@ -26,7 +30,9 @@ namespace Queo.Commons.Persistence.EntityFramework.Tests
             where TDbContext : DbContext
         {
             DbContextOptions<TDbContext> dbContextOptions = new DbContextOptionsBuilder<TDbContext>()
-                .UseInMemoryDatabase(databaseName: GetDbName(dbName)).Options;
+                .UseInMemoryDatabase(databaseName: GetDbName(dbName))
+                .UseLazyLoadingProxies()
+                .Options;
             return dbContextOptions;
         }
     }

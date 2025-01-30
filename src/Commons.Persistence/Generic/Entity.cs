@@ -106,12 +106,21 @@ namespace Queo.Commons.Persistence.Generic
         /// </returns>
         public override int GetHashCode()
         {
-            return GetType().GetHashCode() ^ BusinessId.GetHashCode();
+            return GetTypeUnproxied().GetHashCode() ^ BusinessId.GetHashCode();
         }
 
         public virtual Type GetTypeUnproxied()
         {
-            return GetType();
+            // Getting the Type 
+            Type type = GetType() ?? throw new NullReferenceException("Type is null");
+
+            // If the type is a proxy, get the base type
+            if (type.Namespace == "Castle.Proxies")
+            {
+                return type.BaseType!;
+            }
+
+            return type;
         }
 
         /// <summary>
@@ -122,7 +131,7 @@ namespace Queo.Commons.Persistence.Generic
         /// </returns>
         public override string ToString()
         {
-            string toString = $"Type: {GetType().Name}, Id: {Id}, Bid: {BusinessId}";
+            string toString = $"Type: {GetTypeUnproxied().Name}, Id: {Id}, Bid: {BusinessId}";
             return toString;
         }
     }
